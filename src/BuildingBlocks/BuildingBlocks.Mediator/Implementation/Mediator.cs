@@ -11,7 +11,7 @@ public class Mediator : IMediator
 
     public async Task<TResponse> Send<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default)
     {
-        if (command == null) throw new ArgumentNullException(nameof(command));
+        ArgumentNullException.ThrowIfNull(command);
 
         var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResponse));
         var handler = _provider.GetService(handlerType);
@@ -25,7 +25,7 @@ public class Mediator : IMediator
         Task<TResponse> HandlerDelegate() =>
             ((Task<TResponse>)handlerType.GetMethod("HandleAsync")!.Invoke(handler, new object[] { command, cancellationToken })!);
 
-        Func<Task<TResponse>> pipeline = HandlerDelegate;
+        var pipeline = HandlerDelegate;
 
         foreach (var behavior in behaviors)
         {

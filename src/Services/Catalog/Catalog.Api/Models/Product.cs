@@ -7,5 +7,5 @@ public class Product
     public List<string> Categories { get; set; } = [];
     public string Description { get; set; } = null!;
     public string ImageFile { get; set; } = null!;
-    public long Price { get; set; }
+    public decimal Price { get; set; }
 }

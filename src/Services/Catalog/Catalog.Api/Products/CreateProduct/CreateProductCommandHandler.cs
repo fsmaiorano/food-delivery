@@ -5,9 +5,31 @@ public record CreateProductCommand(
     List<string> Categories,
     string Description,
     string ImageUrl,
-    long Price) : ICommand<CreateProductResult>;
+    decimal Price) : ICommand<CreateProductResult>;
 
 public record CreateProductResult(Guid Id);
+
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+{
+    public CreateProductCommandValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("Product name is required.");
+        RuleFor(x => x.Categories)
+            .NotEmpty()
+            .WithMessage("At least one category is required.");
+        RuleFor(x => x.Description)
+            .NotEmpty()
+            .WithMessage("Product description is required.");
+        RuleFor(x => x.ImageUrl)
+            .NotEmpty()
+            .WithMessage("Product image URL is required.");
+        RuleFor(x => x.Price)
+            .NotEmpty()
+            .WithMessage("Product price is required.");
+    }
+}
 
 internal class CreateProductCommandHandler(
     IDocumentSession session)

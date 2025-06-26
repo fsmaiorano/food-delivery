@@ -1,6 +1,3 @@
-
-using Catalog.Api.Products.UpdateProduct;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
@@ -21,6 +18,7 @@ CreateProductEndpoint.MapEndpoints(app);
 UpdateProductEndpoint.MapEndpoints(app);
 DeleteProductEndpoint.MapEndpoints(app);
 GetProductsEndpoint.MapEndpoints(app);
+GetProductByIdEndpoint.MapEndpoints(app);
 
 app.UseExceptionHandler(options => { });
 

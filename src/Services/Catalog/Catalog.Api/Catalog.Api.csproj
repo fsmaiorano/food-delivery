@@ -17,7 +17,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Marten" Version="8.3.0" />
       <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1-Preview.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Mediator\BuildingBlocks.Mediator.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj" />
     </ItemGroup>
 
 </Project>

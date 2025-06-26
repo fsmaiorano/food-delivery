@@ -1,12 +1,15 @@
 using System.Globalization;
 
-namespace Catalog.Api.Products.CreateProduct;
+namespace Catalog.Api.Products.UpdateProduct;
 
-public class CreateProductValidator(CreateProductCommand command)
+public class CreateProductValidator(UpdateProductCommand command)
 {
     public void Validate()
     {
         var errors = new List<string>();
+        
+        if(Guid.Empty == command.Id || command.Id == default)
+            errors.Add("Product ID is required.");
 
         if (string.IsNullOrWhiteSpace(command.Name))
             errors.Add("Product name is required.");
@@ -22,7 +25,7 @@ public class CreateProductValidator(CreateProductCommand command)
 
         if (command.Price <= 0)
             errors.Add("Product price must be greater than zero.");
-        
+
         if (!decimal.TryParse(command.Price.ToString(CultureInfo.InvariantCulture), out _))
             errors.Add("Product price must be a valid decimal number.");
 

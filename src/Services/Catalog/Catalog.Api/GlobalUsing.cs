@@ -7,3 +7,5 @@ global using Catalog.Api.Products.CreateProduct;
 global using Catalog.Api.Products.GetProducts;
 global using BuildingBlocks.Exceptions.Handler;
 global using BuildingBlocks.Exceptions;
+global using Catalog.Api.Exceptions;
+global using Catalog.Api.Products.DeleteProduct;

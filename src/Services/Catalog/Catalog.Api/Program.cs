@@ -9,9 +9,6 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavi
 builder.Services.AddMarten(opt => { opt.Connection(builder.Configuration.GetConnectionString("Database")!); })
     .UseLightweightSessions();
 
-builder.Services.AddValidatorsFromAssembly(assembly);
-
-
 // if (builder.Environment.IsDevelopment())
 //     builder.Services.InitializeMartenWith<CatalogInitialData>();
 

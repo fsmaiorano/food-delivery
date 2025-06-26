@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="12.0.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0"/>
         <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="4.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />

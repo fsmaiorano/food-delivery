@@ -7,7 +7,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         CancellationToken cancellationToken,
         Func<Task<TResponse>> next)
     {
-        Console.WriteLine($"[BEHAVIOR] → Executando {typeof(TRequest).Name}");
+        Console.WriteLine($"[LOG] → Running {typeof(TRequest).Name}");
 
         if (next == null)
         {
@@ -16,7 +16,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         var response = await next();
 
-        Console.WriteLine($"[BEHAVIOR] ← Finalizado {typeof(TRequest).Name}");
+        Console.WriteLine($"[LOG] ← Finished {typeof(TRequest).Name}");
         return response;
     }
 }

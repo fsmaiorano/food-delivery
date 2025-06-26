@@ -8,11 +8,13 @@ public static class ServiceCollectionExtensions
     {
         var assemblies = ResolveAssemblies(args);
 
-        services.AddSingleton<IMediator, Implementation.Mediator>();
-        services.AddScoped<IDispatcher, Dispatcher>();
+        services.AddScoped<IMediator, Implementation.Mediator>();
 
         RegisterHandlers(services, assemblies, typeof(INotificationHandler<>));
         RegisterHandlers(services, assemblies, typeof(ICommandHandler<,>));
+        RegisterHandlers(services, assemblies, typeof(IQueryHandler<,>));
+        RegisterHandlers(services, assemblies, typeof(IPipelineBehavior<,>));
+
 
         return services;
     }

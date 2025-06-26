@@ -9,12 +9,24 @@ public record CreateProductRequest(
 
 public record CreateProductResponse(Guid Id);
 
-public static class CreateProductEndpoint
+public class CreateProductEndpoint
 {
     public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPost("/products",
-                async (CreateProductRequest request, CancellationToken cancellationToken) => { return Results.Ok(); })
+                async (CreateProductRequest request, IMediator sender, CancellationToken cancellationToken) =>
+                {
+                    var command = new CreateProductCommand(
+                        request.Name,
+                        request.Categories,
+                        request.Description,
+                        request.ImageUrl,
+                        (long)(request.Price * 100));
+
+                    var result = await sender.Send(command, cancellationToken);
+
+                    return Results.Ok();
+                })
             .WithName("CreateProduct")
             .Produces<CreateProductResponse>(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status400BadRequest)

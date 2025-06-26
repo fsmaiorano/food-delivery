@@ -5,7 +5,7 @@ public record CreateProductRequest(
     List<string> Categories,
     string Description,
     string ImageUrl,
-    decimal Price);
+    long Price);
 
 public record CreateProductResponse(Guid Id);
 
@@ -21,7 +21,7 @@ public class CreateProductEndpoint
                         request.Categories,
                         request.Description,
                         request.ImageUrl,
-                        (long)(request.Price * 100));
+                        request.Price);
 
                     var result = await sender.Send(command, cancellationToken);
 

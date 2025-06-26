@@ -1,7 +1,3 @@
-using System.Reflection;
-using BuildingBlocks.Mediator.Behaviors;
-using Catalog.Api.Products.CreateProduct;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMediator(Assembly.GetExecutingAssembly());
@@ -17,5 +13,6 @@ builder.Services.AddScoped<CreateProductEndpoint>();
 var app = builder.Build();
 
 CreateProductEndpoint.MapEndpoints(app);
+GetProductsEndpoint.MapEndpoints(app);
 
 app.Run();

@@ -2,3 +2,7 @@ global using BuildingBlocks.Mediator.Interfaces;
 global using Catalog.Api.Models;
 global using Marten;
 global using BuildingBlocks.Mediator.Extensions;
+global using System.Reflection;
+global using BuildingBlocks.Mediator.Behaviors;
+global using Catalog.Api.Products.CreateProduct;
+global using Catalog.Api.Products.GetProducts;

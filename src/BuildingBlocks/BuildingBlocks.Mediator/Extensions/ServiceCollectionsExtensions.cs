@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
         RegisterHandlers(services, assemblies, typeof(IQueryHandler<,>));
         RegisterHandlers(services, assemblies, typeof(IPipelineBehavior<,>));
 
-
         return services;
     }
 

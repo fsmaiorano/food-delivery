@@ -13,8 +13,6 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
     {
         logger.LogError("Error Message: {exceptionMessage}, Time of occurrence: {timeOfOccurrence}",
             exception.Message, DateTime.UtcNow);
-
-        var x = exception;
         
         (string Detail, string Title, int StatusCode) details = exception switch
         {
@@ -33,7 +31,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
                 exception.GetType().Name,
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
             ),
-          
+            ValidationException => (
+                exception.Message,
+                exception.GetType().Name,
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest
+            ),
             _ => (
                 exception.Message,
                 exception.GetType().Name,
@@ -49,6 +51,11 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         };
 
         problemDetails.Extensions.Add("traceId", httpContext.TraceIdentifier);
+
+        if (exception is ValidationException validationException)
+        {
+            problemDetails.Extensions.Add("ValidationErrors", validationException.Errors);
+        }
 
         httpContext.Response.ContentType = "application/json";
         await httpContext.Response.WriteAsync(

@@ -16,6 +16,9 @@ internal class CreateProductCommandHandler(
     public async Task<CreateProductResult> HandleAsync(CreateProductCommand command,
         CancellationToken cancellationToken)
     {
+        var validator = new CreateProductValidator(command);
+        validator.Validate();
+
         var product = new Product()
         {
             Name = command.Name,

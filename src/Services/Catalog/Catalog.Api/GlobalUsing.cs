@@ -6,3 +6,4 @@ global using BuildingBlocks.Mediator.Behaviors;
 global using Catalog.Api.Products.CreateProduct;
 global using Catalog.Api.Products.GetProducts;
 global using BuildingBlocks.Exceptions.Handler;
+global using BuildingBlocks.Exceptions;

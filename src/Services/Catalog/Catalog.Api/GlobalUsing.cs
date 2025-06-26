@@ -11,3 +11,4 @@ global using Catalog.Api.Exceptions;
 global using Catalog.Api.Products.DeleteProduct;
 global using Catalog.Api.Products.GetProductById;
 global using Catalog.Api.Products.UpdateProduct;
+global using Catalog.Api.Products.GetProductByCategory;

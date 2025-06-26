@@ -19,6 +19,7 @@ UpdateProductEndpoint.MapEndpoints(app);
 DeleteProductEndpoint.MapEndpoints(app);
 GetProductsEndpoint.MapEndpoints(app);
 GetProductByIdEndpoint.MapEndpoints(app);
+GetProductByCategoryEndpoint.MapEndpoints(app);
 
 app.UseExceptionHandler(options => { });
 

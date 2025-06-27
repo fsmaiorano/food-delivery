@@ -29,7 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Basket\" />
+        <Protobuf Include="..\..\Discount\Discount.Grpc\Protos\discount.proto" GrpcServices="Client" Link="Protos\discount.proto"/>
     </ItemGroup>
-
 </Project>

@@ -2,12 +2,34 @@ services:
   catalogdb:
     image: postgres:latest
   
+  basketdb:
+    image: postgres:latest
+  
+  distributedcache:
+    image: redis:latest
+  
+  messagebroker:
+    image: rabbitmq:management
+  
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
+  
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+  
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Grpc/Dockerfile
 
 volumes:
   postgres_catalog:
+  postgres_basket:
   #  sql_order:

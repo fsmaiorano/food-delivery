@@ -4,6 +4,7 @@ using Basket.Api.Basket.GetBasket;
 using Basket.Api.Basket.StoreBasket;
 using Basket.Api.Data;
 using Basket.Api.Models;
+using BuildingBlocks.Messaging;
 using Discount.Grpc;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -31,6 +32,13 @@ builder.Services.AddScoped<IBasketRepository>(sp =>
         sp.GetRequiredService<IDistributedCache>()
     )
 );
+
+builder.Services.AddRabbitMq(options =>
+{
+    options.HostName = builder.Configuration["MessageBroker:Host"]!;
+    options.UserName = builder.Configuration["MessageBroker:UserName"]!;
+    options.Password = builder.Configuration["MessageBroker:Password"]!;
+});
 
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
 {

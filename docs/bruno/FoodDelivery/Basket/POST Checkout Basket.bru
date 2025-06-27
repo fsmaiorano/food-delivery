@@ -1,0 +1,34 @@
+meta {
+  name: POST Checkout Basket
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{basket_url}}/basket/checkout
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "BasketCheckoutDto": 
+          {
+        "userName": "username",
+        "CustomerId": "189dc8dc-990f-48e0-a37b-e6f2b60b9d7d",
+        "totalPrice": 0,
+        "firstName": "username",
+        "lastName": "username",
+        "emailAddress": "test@test.com",
+        "addressLine": "34 Charles Street",
+        "country": "USA",
+        "state": "Michigan",
+        "zipCode": "48198",
+        "cardName": "username",
+        "cardNumber": "485-3184",
+        "expiration": "11/30",
+        "cvv": "333",
+        "paymentMethod": 1
+      }
+  }
+}

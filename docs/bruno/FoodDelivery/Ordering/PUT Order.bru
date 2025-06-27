@@ -1,0 +1,65 @@
+meta {
+  name: PUT Order
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{ordering_url}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+  	"Order": 
+          {
+              "Id": "354c00f6-b04c-46ed-8d6d-f9f42d7bdf98",
+          	"CustomerId": "58c49479-ec65-4de2-86e7-033c546291aa",
+              "OrderName": "ORD_5",
+              "ShippingAddress": 
+              	{
+              		"FirstName": "Mehmet",
+  	                "LastName": "Legros",
+  	                "EmailAddress": "valeg@xmail.com",
+  	                "AddressLine": "Wiegand Pass Suite 825",
+  	                "Country": "USA",
+  	                "State": "New York",
+  	                "ZipCode": "41248"
+              	},
+              "BillingAddress": 
+              	{
+              		"FirstName": "Mehmet",
+  	                "LastName": "Legros",
+  	                "EmailAddress": "valeg@xmail.com",
+  	                "AddressLine": "Wiegand Pass Suite 825",
+  	                "Country": "USA",
+  	                "State": "Oklahoma",
+  	                "ZipCode": "41248"
+              	},
+              "Payment": 
+              	{
+              		"CardName": "CARD_2",
+  	                "CardNumber": "875-444-3739",
+  	                "Expiration": "12/29",
+  	                "CVV": "455",
+  	                "PaymentMethod": 1
+              	},
+              "Status": 2,
+              "OrderItems": [
+                  {
+  	                "ProductId": "5334c996-8457-4cf0-815c-ed2b77c4ff61",
+  	                //"ProductName": "IPhone X",
+  	                "Quantity": 2,
+  	                "Price": 500
+                  },
+                  {
+  	                "ProductId": "c67d6323-e8b1-4bdf-9a75-b0d0d2e7e914",
+  	                //"ProductName": "Samsung 10",
+  	                "Quantity": 1,
+  	                "Price": 500
+                  }
+              ]  
+          }
+  }
+}

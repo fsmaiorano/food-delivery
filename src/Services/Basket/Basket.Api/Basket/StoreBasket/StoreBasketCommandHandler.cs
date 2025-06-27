@@ -30,7 +30,11 @@ public class StoreBasketCommandHandler(
                 cancellationToken: cancellationToken
             );
 
-            item.Price -= decimal.Parse(coupon.Amount);
+            if (decimal.TryParse(coupon.Amount, out var discountAmount))
+                item.Price -= discountAmount;
+            else
+                throw new InvalidOperationException(
+                    $"Invalid discount amount for product {item.ProductName}: {coupon.Amount}");
         }
     }
 }

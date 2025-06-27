@@ -1,0 +1,22 @@
+meta {
+  name: UpdateProducts
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{catalog_url}}/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "Id": "0197ac7d-aa70-41fb-8be5-d97ffabe9fde",
+      "Name": "fabio",
+      "Category": ["c1", "c2", "cUpdated"],
+      "Description": "Description Product A Updated",
+      "ImageFile": "ImageFile Product A Updated",
+      "Price": 1111
+  }
+}

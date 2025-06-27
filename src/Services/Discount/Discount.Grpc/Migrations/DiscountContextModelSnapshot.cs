@@ -22,7 +22,8 @@ namespace Discount.Grpc.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<string>("Amount")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -41,14 +42,14 @@ namespace Discount.Grpc.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 150m,
+                            Amount = "150.0000",
                             Description = "IPhone Discount",
                             ProductName = "IPhone X"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 100m,
+                            Amount = "100.0000",
                             Description = "Samsung Discount",
                             ProductName = "Samsung 10"
                         });

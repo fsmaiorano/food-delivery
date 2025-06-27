@@ -1,0 +1,16 @@
+meta {
+  name: GET Orders w/ Pagination
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{ordering_url}}/orders?PageIndex=0&PageSize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  PageIndex: 0
+  PageSize: 2
+}

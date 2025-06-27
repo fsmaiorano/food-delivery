@@ -9,7 +9,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
                      new Coupon()
                      {
                          ProductName = "No Discount",
-                         Amount = 0,
+                         Amount = "0.00",
                          Description = "No discount available"
                      };
 
@@ -19,7 +19,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         var couponModel = new CouponModel
         {
             ProductName = coupon.ProductName,
-            Amount = coupon.Amount.ToString(CultureInfo.InvariantCulture),
+            Amount = coupon.Amount,
             Description = coupon.Description
         };
         return couponModel;
@@ -30,7 +30,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         var coupon = new Coupon
         {
             ProductName = request.Coupon.ProductName,
-            Amount = decimal.Parse(request.Coupon.Amount),
+            Amount = request.Coupon.Amount,
             Description = request.Coupon.Description
         };
 
@@ -46,7 +46,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         var couponModel = new CouponModel
         {
             ProductName = coupon.ProductName,
-            Amount = coupon.Amount.ToString(CultureInfo.InvariantCulture),
+            Amount = coupon.Amount,
             Description = coupon.Description
         };
         return couponModel;
@@ -57,7 +57,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         var coupon = new Coupon
         {
             ProductName = request.Coupon.ProductName,
-            Amount = decimal.Parse(request.Coupon.Amount),
+            Amount = request.Coupon.Amount,
             Description = request.Coupon.Description
         };
 
@@ -73,7 +73,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         var couponModel = new CouponModel
         {
             ProductName = coupon.ProductName,
-            Amount = coupon.Amount.ToString(CultureInfo.InvariantCulture),
+            Amount = coupon.Amount,
             Description = coupon.Description
         };
         return couponModel;

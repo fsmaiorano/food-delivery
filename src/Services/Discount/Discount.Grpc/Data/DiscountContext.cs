@@ -17,14 +17,14 @@ public class DiscountContext : DbContext
                 Id = 1,
                 ProductName = "IPhone X",
                 Description = "IPhone Discount",
-                Amount = 150
+                Amount = 150.ToString("F4")
             },
             new Coupon
             {
                 Id = 2,
                 ProductName = "Samsung 10",
                 Description = "Samsung Discount",
-                Amount = 100
+                Amount = 100.ToString("F4")
             }
         );
     }

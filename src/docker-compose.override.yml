@@ -31,7 +31,7 @@ services:
   
   messagebroker:
     container_name: messagebroker
-    hostname: food-delivery-mq
+    hostname: ecommerce-mq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest

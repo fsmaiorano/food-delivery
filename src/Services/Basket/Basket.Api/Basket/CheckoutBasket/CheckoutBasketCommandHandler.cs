@@ -40,7 +40,7 @@ public class CheckoutBasketCommandHandler(IBasketRepository repository, IMessage
             PaymentMethod = (int)command.BasketCheckoutDto.PaymentMethod
         };
 
-        await messagePublisher.PublishAsync(eventMessage, "");
+        await messagePublisher.PublishAsync(eventMessage, "", cancellationToken);
         await repository.DeleteBasket(command.BasketCheckoutDto.UserName, cancellationToken);
 
         return new CheckoutBasketResult(true);

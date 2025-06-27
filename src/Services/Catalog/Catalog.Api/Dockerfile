@@ -7,6 +7,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
+COPY ["BuildingBlocks/BuildingBlocks.Mediator/BuildingBlocks.Mediator.csproj", "BuildingBlocks.Mediator/BuildingBlocks.Mediator/"]
 COPY ["Services/Catalog/Catalog.Api/Catalog.Api.csproj", "Services/Catalog/Catalog.Api/"]
 RUN dotnet restore "./Services/Catalog/Catalog.Api/Catalog.Api.csproj"
 COPY . .

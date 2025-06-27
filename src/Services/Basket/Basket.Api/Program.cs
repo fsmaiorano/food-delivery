@@ -13,13 +13,6 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
-CreateProductEndpoint.MapEndpoints(app);
-UpdateProductEndpoint.MapEndpoints(app);
-DeleteProductEndpoint.MapEndpoints(app);
-GetProductsEndpoint.MapEndpoints(app);
-GetProductByIdEndpoint.MapEndpoints(app);
-GetProductByCategoryEndpoint.MapEndpoints(app);
-
-app.UseExceptionHandler(options => { });
+app.MapGet("/", () => "Hello World!");
 
 app.Run();

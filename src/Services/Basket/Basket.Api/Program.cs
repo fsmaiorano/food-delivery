@@ -1,3 +1,7 @@
+using Basket.Api.Basket.CheckoutBasket;
+using Basket.Api.Basket.DeleteBasket;
+using Basket.Api.Basket.GetBasket;
+using Basket.Api.Basket.StoreBasket;
 using Basket.Api.Data;
 using Discount.Grpc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -41,6 +45,9 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+StoreBasketEndpoint.MapEndpoints(app);
+GetBasketEndpoint.MapEndpoints(app);
+DeleteBasketEndpoint.MapEndpoints(app);
+CheckoutBasketEndpoints.MapEndpoints(app);
 
 app.Run();

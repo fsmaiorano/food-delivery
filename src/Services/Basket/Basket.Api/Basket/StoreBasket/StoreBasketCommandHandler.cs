@@ -30,7 +30,8 @@ public class StoreBasketCommandHandler(
                 cancellationToken: cancellationToken
             );
 
-            if (decimal.TryParse(coupon.Amount, out var discountAmount))
+            if (decimal.TryParse(coupon.Amount?.Trim(), System.Globalization.NumberStyles.AllowDecimalPoint,
+                    System.Globalization.CultureInfo.InvariantCulture, out var discountAmount))
                 item.Price -= discountAmount;
             else
                 throw new InvalidOperationException(

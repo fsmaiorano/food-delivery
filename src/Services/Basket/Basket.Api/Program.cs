@@ -3,6 +3,7 @@ using Basket.Api.Basket.DeleteBasket;
 using Basket.Api.Basket.GetBasket;
 using Basket.Api.Basket.StoreBasket;
 using Basket.Api.Data;
+using Basket.Api.Models;
 using Discount.Grpc;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -14,7 +15,11 @@ builder.Services.AddMediator(assembly);
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
-builder.Services.AddMarten(opt => { opt.Connection(builder.Configuration.GetConnectionString("Database")!); })
+builder.Services.AddMarten(opt =>
+    {
+        opt.Connection(builder.Configuration.GetConnectionString("Database")!);
+        opt.Schema.For<ShoppingCart>().Identity(x => x.Username);
+    })
     .UseLightweightSessions();
 
 builder.Services.AddDistributedMemoryCache();

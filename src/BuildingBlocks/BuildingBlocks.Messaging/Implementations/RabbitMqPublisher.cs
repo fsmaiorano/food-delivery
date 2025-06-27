@@ -6,7 +6,7 @@ using RabbitMQ.Client;
 
 namespace BuildingBlocks.Messaging.Implementations;
 
-public class RabbitMqPublisher(RabbitMQOptions options) : IMessagePublisher
+public class RabbitMqPublisher(RabbitMqOptions options) : IMessagePublisher
 {
     private readonly ConnectionFactory _factory = new()
     {

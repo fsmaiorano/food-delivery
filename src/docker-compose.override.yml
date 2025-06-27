@@ -31,7 +31,7 @@ services:
   
   messagebroker:
     container_name: messagebroker
-    hostname: ecommerce-mq
+    hostname: food-delivery-mq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -67,7 +67,7 @@ services:
       - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BasketDb;User Id=postgres;Password=postgres;;Include Error Detail=true;
       - ConnectionStrings__Redis=distributedcache:6379
       - GrpcSettings__DiscountGrpcUrl=https://discountgrpc:8081
-      - MessageBroker__Host=amqp://ecommerce-mq:5672
+      - MessageBroker__Host=amqp://food-delivery-mq:5672
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx

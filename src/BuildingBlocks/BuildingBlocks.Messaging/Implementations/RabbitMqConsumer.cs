@@ -7,7 +7,7 @@ using RabbitMQ.Client;
 
 namespace BuildingBlocks.Messaging.Implementations;
 
-public class RabbitMqConsumer(RabbitMQOptions options) : IMessageConsumer
+public class RabbitMqConsumer(RabbitMqOptions options) : IMessageConsumer
 {
     private readonly ConnectionFactory _factory = new()
     {

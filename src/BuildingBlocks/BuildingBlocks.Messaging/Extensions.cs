@@ -7,9 +7,9 @@ namespace BuildingBlocks.Messaging;
 
 public static class Extensions
 {
-    public static IServiceCollection AddRabbitMq(this IServiceCollection services, Action<RabbitMQOptions> setup)
+    public static IServiceCollection AddRabbitMq(this IServiceCollection services, Action<RabbitMqOptions> setup)
     {
-        var options = new RabbitMQOptions();
+        var options = new RabbitMqOptions();
         setup(options);
 
         services.AddSingleton(options);

@@ -1,0 +1,12 @@
+global using System.Reflection;
+global using BuildingBlocks.Mediator.Interfaces;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
+global using Microsoft.EntityFrameworkCore.Diagnostics;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Ordering.Application.Data;
+global using Ordering.Domain.Abstractions;
+global using Ordering.Domain.Models;
+global using Ordering.Infrastructure.Data;
+global using Ordering.Infrastructure.Data.Interceptors;

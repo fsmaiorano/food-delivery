@@ -23,6 +23,17 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql/data
   
+  orderdb:
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123
+    restart: always
+    ports:
+      - "1433:1433"
+    #    volumes:
+    #      - sql_order:/var/opt/mssql
+  
   distributedcache:
     container_name: distributedcache
     restart: always
@@ -102,6 +113,32 @@ services:
     ports:
       - "6002:8080"
       - "6062:8081"
+    # Modified volume mounts for macOS compatibility
+    volumes:
+      #   - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
+      #   - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+      - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
+      - ${HOME}/.aspnet/https:/root/.aspnet/https:ro
+  
+  ordering.api:
+    container_name: orderingapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;
+      - MessageBroker__Host=amqp://food-delivery-mq:5672
+      - MessageBroker__UserName=guest
+      - MessageBroker__Password=guest
+      - FeatureManagement__OrderFullfilment=false
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+    depends_on:
+      - orderdb
+      - messagebroker
+    ports:
+      - "6003:8080"
+      - "6063:8081"
     # Modified volume mounts for macOS compatibility
     volumes:
       #   - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro

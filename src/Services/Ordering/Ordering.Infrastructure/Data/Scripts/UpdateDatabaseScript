@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Prompt the user for a migration name
+read -p "Enter the migration name to update the database (leave empty to update to the latest migration): " migration_name
+
+# Check if the migration name is empty
+if [ -z "$migration_name" ]; then
+  # Update to the latest migration
+  dotnet ef database update -p ../../Ordering.Infrastructure.csproj -s ../../../Ordering.API/Ordering.API.csproj
+else
+  # Update to the specified migration
+  dotnet ef database update "$migration_name" -p ../../Ordering.Infrastructure.csproj -s ../../../Ordering.API/Ordering.API.csproj
+fi
+
+# Check if the command was successful
+if [ $? -eq 0 ]; then
+  echo "Database updated successfully."
+else
+  echo "Failed to update the database."
+fi

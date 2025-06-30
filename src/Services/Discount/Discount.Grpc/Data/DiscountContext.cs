@@ -15,16 +15,30 @@ public class DiscountContext : DbContext
             new Coupon
             {
                 Id = 1,
-                ProductName = "IPhone X",
-                Description = "IPhone Discount",
-                Amount = 150.ToString("F4")
+                ProductName = "Margherita Pizza",
+                Description = "Pizza Discount",
+                Amount = 2.5m.ToString("F4")
             },
             new Coupon
             {
                 Id = 2,
-                ProductName = "Samsung 10",
-                Description = "Samsung Discount",
-                Amount = 100.ToString("F4")
+                ProductName = "Cheeseburger",
+                Description = "Burger Discount",
+                Amount = 1.5m.ToString("F4")
+            },
+            new Coupon
+            {
+                Id = 3,
+                ProductName = "Caesar Salad",
+                Description = "Salad Discount",
+                Amount = 1.0m.ToString("F4")
+            },
+            new Coupon
+            {
+                Id = 4,
+                ProductName = "Sushi Roll",
+                Description = "Sushi Discount",
+                Amount = 3.0m.ToString("F4")
             }
         );
     }

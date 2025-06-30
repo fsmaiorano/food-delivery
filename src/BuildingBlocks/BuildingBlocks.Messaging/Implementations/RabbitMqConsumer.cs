@@ -13,10 +13,12 @@ public class RabbitMqConsumer(RabbitMqOptions options) : IMessageConsumer
     {
         HostName = options.HostName,
         UserName = options.UserName,
-        Password = options.Password
+        Password = options.Password,
     };
 
-    public async void StartConsuming<T>(string queueName, Func<T, Task> onMessageReceived,
+    public async Task StartConsumingAsync<T>(
+        string queueName,
+        Func<T, Task> onMessageReceived,
         CancellationToken cancellationToken = default)
     {
         try
@@ -24,28 +26,43 @@ public class RabbitMqConsumer(RabbitMqOptions options) : IMessageConsumer
             await using var connection = await _factory.CreateConnectionAsync(cancellationToken);
             await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
-            if (cancellationToken.IsCancellationRequested)
-                return;
-
-            await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false,
-                cancellationToken: cancellationToken);
+            await channel.QueueDeclareAsync(
+                queue: queueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                cancellationToken: cancellationToken
+            );
 
             var consumer = new AsyncEventingBasicConsumer(channel);
 
             consumer.ReceivedAsync += async (_, ea) =>
             {
-                var body = ea.Body.ToArray();
-                var json = Encoding.UTF8.GetString(body);
-                var message = JsonSerializer.Deserialize<T>(json);
-                if (message != null)
-                    await onMessageReceived(message);
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
+                try
+                {
+                    var body = ea.Body.ToArray();
+                    var json = Encoding.UTF8.GetString(body);
+                    var message = JsonSerializer.Deserialize<T>(json);
+
+                    if (message != null)
+                        await onMessageReceived(message);
+                }
+                catch (Exception ex)
+                {
+                    // TODO: log da falha ao processar a mensagem
+                    Console.WriteLine($"Erro ao processar mensagem: {ex.Message}");
+                }
             };
 
-            var consumerTag = await channel.BasicConsumeAsync(queue: queueName, autoAck: true, consumer: consumer,
-                cancellationToken: cancellationToken);
-
-            if (channel.IsClosed || cancellationToken.IsCancellationRequested)
-                return;
+            var consumerTag = await channel.BasicConsumeAsync(
+                queue: queueName,
+                autoAck: true,
+                consumer: consumer,
+                cancellationToken: cancellationToken
+            );
 
             await Task.Run(() =>
             {
@@ -55,9 +72,13 @@ public class RabbitMqConsumer(RabbitMqOptions options) : IMessageConsumer
                 connection.CloseAsync(cancellationToken: cancellationToken);
             }, cancellationToken);
         }
-        catch (Exception e)
+        catch (OperationCanceledException)
         {
-            throw; // TODO handle exception
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro geral no consumidor: {ex.Message}");
+            throw;
         }
     }
 }

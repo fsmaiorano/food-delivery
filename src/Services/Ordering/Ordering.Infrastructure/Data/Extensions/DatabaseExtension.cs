@@ -1,6 +1,6 @@
 namespace Ordering.Infrastructure.Data.Extensions;
 
-public static class DatabaseExtentions
+public static class DatabaseExtencions
 {
     public static async Task InitialiseDatabaseAsync(this WebApplication app)
     {

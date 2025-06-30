@@ -8,9 +8,9 @@ public record UpdateOrderRequest(OrderDto Order);
 
 public record UpdateOrderResponse(bool IsSuccess);
 
-public class UpdateOrder
+public class UpdateOrderEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder endpoints)
+    public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapPut("/orders", async (UpdateOrderRequest request, IMediator sender) =>
             {
@@ -19,7 +19,7 @@ public class UpdateOrder
                 var response = new UpdateOrderResponse(result.IsSuccess);
                 return Results.Ok(response);
             })
-            .WithName("UpdateOrder")
+            .WithName("UpdateOrderEndpoint")
             .Produces<UpdateOrderResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Update Order")

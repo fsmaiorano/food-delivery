@@ -1,4 +1,5 @@
 using Ordering.Api;
+using Ordering.API.Endpoints;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Data.Extensions;
@@ -14,6 +15,13 @@ builder.Services
 var app = builder.Build();
 
 app.UseApiServices();
+
+CreateOrderEndpoint.MapEndpoints(app);
+DeleteOrderEndpoint.MapEndpoints(app);
+UpdateOrderEndpoint.MapEndpoints(app);
+GetOrdersByCustomerEndpoint.MapEndpoints(app);
+GetOrdersByNameEndpoint.MapEndpoints(app);
+GetOrdersEndpoint.MapEndpoints(app);
 
 if (app.Environment.IsDevelopment())
 {

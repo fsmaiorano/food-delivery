@@ -61,6 +61,6 @@ var app = builder.Build();
 StoreBasketEndpoint.MapEndpoints(app);
 GetBasketEndpoint.MapEndpoints(app);
 DeleteBasketEndpoint.MapEndpoints(app);
-CheckoutBasketEndpoints.MapEndpoints(app);
+CheckoutBasketEndpoint.MapEndpoints(app);
 
 app.Run();

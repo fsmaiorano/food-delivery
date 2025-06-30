@@ -6,7 +6,7 @@ public record CheckoutBasketRequest(BasketCheckoutDto BasketCheckoutDto);
 
 public record CheckoutBasketResponse(bool IsSuccess);
 
-public class CheckoutBasketEndpoints
+public class CheckoutBasketEndpoint
 {
     public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {

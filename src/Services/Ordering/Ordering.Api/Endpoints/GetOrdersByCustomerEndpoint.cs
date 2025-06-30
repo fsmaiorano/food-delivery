@@ -7,9 +7,9 @@ namespace Ordering.API.Endpoints;
 //public record GetOrdersByCustomerRequest(Guid CustomerId);
 public record GetOrdersByCustomerResponse(IEnumerable<OrderDto> Orders);
 
-public class GetOrdersByCustomer
+public class GetOrdersByCustomerEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder endpoints)
+    public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/orders/customer/{customerId}", async (Guid customerId, IMediator sender) =>
             {
@@ -17,7 +17,7 @@ public class GetOrdersByCustomer
                 var response = new GetOrdersByCustomerResponse(result.Orders);
                 return Results.Ok(response);
             })
-            .WithName("GetOrdersByCustomer")
+            .WithName("GetOrdersByCustomerEndpoint")
             .Produces<GetOrdersByCustomerResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)

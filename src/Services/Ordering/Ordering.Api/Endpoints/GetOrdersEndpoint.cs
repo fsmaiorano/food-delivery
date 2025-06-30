@@ -6,9 +6,9 @@ using Ordering.Application.Orders.Queries.GetOrders;
 namespace Ordering.API.Endpoints;
 public record GetOrdersResponse(PaginatedResult<OrderDto> Orders);
 
-public class GetOrders
+public class GetOrdersEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public static void MapEndpoints(IEndpointRouteBuilder app)
     {
         app.MapGet("/orders", async ([AsParameters] PaginationRequest request, IMediator sender) =>
             {
@@ -16,7 +16,7 @@ public class GetOrders
                 var response = new GetOrdersResponse(result.Orders);
                 return Results.Ok(response);
             })
-            .WithName("GetOrders")
+            .WithName("GetOrdersEndpoint")
             .Produces<GetOrdersResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)

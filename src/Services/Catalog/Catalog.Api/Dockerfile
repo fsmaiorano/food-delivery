@@ -1,5 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
+USER root
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
-COPY ["BuildingBlocks/BuildingBlocks.Mediator/BuildingBlocks.Mediator.csproj", "BuildingBlocks.Mediator/BuildingBlocks.Mediator/"]
+COPY ["BuildingBlocks/BuildingBlocks.Mediator/BuildingBlocks.Mediator.csproj", "BuildingBlocks/BuildingBlocks.Mediator/"]
 COPY ["Services/Catalog/Catalog.Api/Catalog.Api.csproj", "Services/Catalog/Catalog.Api/"]
 RUN dotnet restore "./Services/Catalog/Catalog.Api/Catalog.Api.csproj"
 COPY . .
@@ -20,6 +20,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Catalog.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+USER root
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Catalog.Api.dll"]

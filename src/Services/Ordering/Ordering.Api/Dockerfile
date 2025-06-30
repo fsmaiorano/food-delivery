@@ -1,4 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+USER root
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -23,6 +24,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Ordering.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+USER root
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ordering.Api.dll"]

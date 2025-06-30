@@ -23,6 +23,12 @@ services:
     volumes:
       - postgres_basket:/var/lib/postgresql/data
   
+  distributedcache:
+    container_name: distributedcache
+    restart: always
+    ports:
+      - "6379:6379"
+  
   orderdb:
     container_name: orderdb
     environment:
@@ -31,18 +37,12 @@ services:
     restart: always
     ports:
       - "1433:1433"
-    #    volumes:
-    #      - sql_order:/var/opt/mssql
-  
-  distributedcache:
-    container_name: distributedcache
-    restart: always
-    ports:
-      - "6379:6379"
+  #    volumes:
+  #      - sql_order:/var/opt/mssql
   
   messagebroker:
     container_name: messagebroker
-    hostname: food-delivery-mq
+    hostname: ecommerce-mq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -65,7 +65,10 @@ services:
     ports:
       - "6000:8080"
       - "6060:8081"
+    # Modified volume mounts for macOS compatibility
     volumes:
+      #   - ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
+      #   - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
       - ${HOME}/.aspnet/https:/root/.aspnet/https:ro
   
@@ -78,7 +81,7 @@ services:
       - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BasketDb;User Id=postgres;Password=postgres;;Include Error Detail=true;
       - ConnectionStrings__Redis=distributedcache:6379
       - GrpcSettings__DiscountGrpcUrl=https://discountgrpc:8081
-      - MessageBroker__Host=amqp://food-delivery-mq:5672
+      - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx
@@ -119,7 +122,7 @@ services:
       #   - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
       - ${HOME}/.aspnet/https:/root/.aspnet/https:ro
-  
+
   ordering.api:
     container_name: orderingapi
     environment:
@@ -127,7 +130,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;
-      - MessageBroker__Host=amqp://food-delivery-mq:5672
+      - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
       - FeatureManagement__OrderFullfilment=false
@@ -145,3 +148,5 @@ services:
       #   - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ${HOME}/.aspnet/https:/home/app/.aspnet/https:ro
       - ${HOME}/.aspnet/https:/root/.aspnet/https:ro
+
+  

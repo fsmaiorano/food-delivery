@@ -5,23 +5,27 @@ services:
   basketdb:
     image: postgres:latest
   
-  orderdb:
-    image: mcr.microsoft.com/mssql/server:latest
-  
   distributedcache:
     image: redis:latest
+  
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:latest
   
   messagebroker:
     image: rabbitmq:management
   
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
+    depends_on:
+      - catalogdb
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.Api/Dockerfile
   
   basket.api:
     image: ${DOCKER_REGISTRY-}basketapi
+    depends_on:
+      - basketdb
     build:
       context: .
       dockerfile: Services/Basket/Basket.Api/Dockerfile
@@ -37,8 +41,9 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
-
+ 
 volumes:
   postgres_catalog:
   postgres_basket:
   #  sql_order:
+  

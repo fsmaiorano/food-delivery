@@ -1,7 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Dtos;
-using Ordering.Application.Orders.Queries.GetOrdersByName;
-
 namespace Ordering.API.Endpoints;
 
 //public record GetOrdersByNameRequest(string Name);

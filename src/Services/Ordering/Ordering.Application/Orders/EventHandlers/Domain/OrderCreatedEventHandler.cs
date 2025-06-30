@@ -1,10 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using BuildingBlocks.Messaging.Interfaces;
-using Microsoft.Extensions.Logging;
-using Microsoft.FeatureManagement;
-using Ordering.Application.Extensions;
-using Ordering.Domain.Events;
-
 namespace Ordering.Application.Orders.EventHandlers.Domain;
 
 public class OrderCreatedEventHandler(

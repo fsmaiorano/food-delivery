@@ -1,8 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Data;
-using Ordering.Application.Exceptions;
-using Ordering.Domain.ValueObjects;
-
 namespace Ordering.Application.Orders.Commands.DeleteOrder;
 
 public class DeleteOrderHandler(IApplicationDbContext dbContext)

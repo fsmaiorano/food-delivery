@@ -1,10 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using BuildingBlocks.Messaging.Events;
-using BuildingBlocks.Messaging.Interfaces;
-using Microsoft.Extensions.Logging;
-using Ordering.Application.Dtos;
-using Ordering.Application.Orders.Commands.CreateOrder;
-
 namespace Ordering.Application.Orders.EventHandlers.Integration;
 
 public class BasketCheckoutEventHandler(IMediator sender, ILogger<BasketCheckoutEventHandler> logger)

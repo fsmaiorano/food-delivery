@@ -1,9 +1,3 @@
-using System.Reflection;
-using BuildingBlocks.Mediator.Behaviors;
-using BuildingBlocks.Mediator.Extensions;
-using BuildingBlocks.Mediator.Interfaces;
-using BuildingBlocks.Messaging;
-
 namespace Ordering.Application;
 
 public static class DependencyInjection

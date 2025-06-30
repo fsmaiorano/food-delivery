@@ -1,9 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Data;
-using Ordering.Application.Dtos;
-using Ordering.Application.Exceptions;
-using Ordering.Domain.ValueObjects;
-
 namespace Ordering.Application.Orders.Commands.UpdateOrder;
 
 public class UpdateOrderHandler(IApplicationDbContext dbContext)

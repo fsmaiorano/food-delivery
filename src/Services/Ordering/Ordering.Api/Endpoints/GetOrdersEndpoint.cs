@@ -1,8 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using BuildingBlocks.Pagination;
-using Ordering.Application.Dtos;
-using Ordering.Application.Orders.Queries.GetOrders;
-
 namespace Ordering.API.Endpoints;
 public record GetOrdersResponse(PaginatedResult<OrderDto> Orders);
 

@@ -1,6 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Orders.Commands.DeleteOrder;
-
 namespace Ordering.API.Endpoints;
 
 //public record DeleteOrderRequest(Guid Id);

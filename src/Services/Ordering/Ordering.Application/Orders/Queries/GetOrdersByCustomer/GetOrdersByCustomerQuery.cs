@@ -1,6 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Dtos;
-
 namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer;
 
 public record GetOrdersByCustomerQuery(Guid CustomerId)

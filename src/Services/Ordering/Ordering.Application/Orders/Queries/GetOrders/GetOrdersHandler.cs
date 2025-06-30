@@ -1,9 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using BuildingBlocks.Pagination;
-using Ordering.Application.Data;
-using Ordering.Application.Dtos;
-using Ordering.Application.Extensions;
-
 namespace Ordering.Application.Orders.Queries.GetOrders;
 
 public class GetOrdersHandler(IApplicationDbContext dbContext)

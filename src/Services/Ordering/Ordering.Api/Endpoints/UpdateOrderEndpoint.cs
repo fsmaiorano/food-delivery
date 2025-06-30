@@ -1,7 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Dtos;
-using Ordering.Application.Orders.Commands.UpdateOrder;
-
 namespace Ordering.API.Endpoints;
 
 public record UpdateOrderRequest(OrderDto Order);

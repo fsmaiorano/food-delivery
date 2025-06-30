@@ -1,8 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-using Ordering.Application.Data;
-using Ordering.Application.Extensions;
-using Ordering.Domain.ValueObjects;
-
 namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer;
 
 public class GetOrdersByCustomerHandler(IApplicationDbContext dbContext)

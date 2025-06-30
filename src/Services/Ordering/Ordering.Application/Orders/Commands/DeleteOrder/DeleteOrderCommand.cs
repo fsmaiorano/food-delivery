@@ -1,5 +1,3 @@
-using BuildingBlocks.Mediator.Interfaces;
-
 namespace Ordering.Application.Orders.Commands.DeleteOrder;
 
 public record DeleteOrderCommand(Guid OrderId)

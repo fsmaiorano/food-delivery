@@ -1,7 +1,3 @@
-using BuildingBlocks.Exceptions.Handler;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.FeatureManagement;
-
 namespace Ordering.Api;
 
 public static class DependencyInjection

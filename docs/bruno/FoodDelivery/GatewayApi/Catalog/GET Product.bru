@@ -1,0 +1,16 @@
+meta {
+  name: GET Product
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{yarp_url}}/catalog-service/products?pageNumber=1&pageSize=5
+  body: none
+  auth: none
+}
+
+params:query {
+  pageNumber: 1
+  pageSize: 5
+}

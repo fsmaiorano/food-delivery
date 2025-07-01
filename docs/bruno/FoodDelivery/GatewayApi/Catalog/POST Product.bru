@@ -1,0 +1,21 @@
+meta {
+  name: POST Product
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{yarp_url}}/catalog-service/products
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "Name": "New Product A",
+      "Category": ["c1", "c2"],
+      "Description": "Description Product A",
+      "ImageFile": "ImageFile Product A",
+      "Price": 199
+  }
+}

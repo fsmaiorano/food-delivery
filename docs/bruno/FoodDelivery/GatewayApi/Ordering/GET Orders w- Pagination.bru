@@ -1,0 +1,16 @@
+meta {
+  name: GET Orders w/ Pagination
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{yarp_url}}/ordering-service/orders?PageIndex=0&PageSize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  PageIndex: 0
+  PageSize: 2
+}

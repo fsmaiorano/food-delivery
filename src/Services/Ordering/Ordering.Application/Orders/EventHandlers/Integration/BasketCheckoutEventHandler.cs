@@ -27,7 +27,7 @@ public class BasketCheckoutEventHandler(IMediator sender, ILogger<BasketCheckout
             ShippingAddress: addressDto,
             BillingAddress: addressDto,
             Payment: paymentDto,
-            Status: Ordering.Domain.Enums.OrderStatus.Pending,
+            Status: OrderStatus.Pending,
             OrderItems:
             [
                 new OrderItemDto(orderId, new Guid("5334c996-8457-4cf0-815c-ed2b77c4ff61"), 2, 500),

@@ -1,0 +1,16 @@
+{
+  "realm": "myrealm",
+  "enabled": true,
+  "users": [
+    {
+      "username": "fsmaiorano",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123456"
+        }
+      ]
+    }
+  ]
+}

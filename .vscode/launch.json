@@ -1,0 +1,99 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Ordering.Api",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Services/Ordering/Ordering.Api/bin/Debug/net9.0/Ordering.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Services/Ordering/Ordering.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Basket.Api",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Services/Basket/Basket.Api/bin/Debug/net9.0/Basket.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Services/Basket/Basket.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Catalog.Api",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Services/Catalog/Catalog.Api/bin/Debug/net9.0/Catalog.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Services/Catalog/Catalog.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "GatewayApi",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Gateways/GatewayApi/bin/Debug/net9.0/GatewayApi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Gateways/GatewayApi",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "Discount.Grpc",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Services/Discount/Discount.Grpc/bin/Debug/net9.0/Discount.Grpc.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Services/Discount/Discount.Grpc",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    },
+    {
+      "name": "User.Api",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Services/User/User.Api/bin/Debug/net9.0/User.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/Services/User/User.Api",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "stopAtEntry": false
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run All APIs",
+      "configurations": [
+        "Ordering.Api",
+        "Basket.Api",
+        "Catalog.Api",
+        "GatewayApi",
+        "Discount.Grpc",
+        "User.Api"
+      ],
+    }
+  ]
+}

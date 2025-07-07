@@ -1,9 +1,15 @@
 services:
+  keycloakdb:
+    image: postgres:latest
+
   catalogdb:
     image: postgres:latest
   
   basketdb:
     image: postgres:latest
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.3
   
   distributedcache:
     image: redis:latest
@@ -51,5 +57,6 @@ services:
 volumes:
   postgres_catalog:
   postgres_basket:
+  postgres_keycloak:
   #  sql_order:
   

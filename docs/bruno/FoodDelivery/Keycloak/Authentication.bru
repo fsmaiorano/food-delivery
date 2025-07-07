@@ -1,0 +1,29 @@
+meta {
+  name: Authentication
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:6005/realms/myrealm/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: none
+}
+
+headers {
+  Content-Type: application/x-www-form-urlencoded
+}
+
+body:json {
+  {
+    "username": "fsmaiorano",
+    "password": "123456"
+  }
+}
+
+body:form-urlencoded {
+  grant_type: password
+  username: fsmaiorano
+  password: 123456
+  client_id: frontend-app
+}

@@ -1,16 +1,74 @@
 {
   "realm": "myrealm",
   "enabled": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin"
+      },
+      {
+        "name": "user"
+      },
+      {
+        "name": "merchant"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "frontend-app",
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "enabled": true
+    },
+    {
+      "clientId": "backend-app",
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "my-backend-secret",
+      "serviceAccountsEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "enabled": true
+    },
+    {
+      "clientId": "gateway",
+      "protocol": "openid-connect",
+      "bearerOnly": true,
+      "enabled": true
+    }
+  ],
   "users": [
     {
       "username": "fsmaiorano",
       "enabled": true,
+      "email": "fsmaiorano@example.com",
+      "firstName": "Fábio",
+      "lastName": "Maiorano",
+      "emailVerified": true,
       "credentials": [
         {
           "type": "password",
-          "value": "123456"
+          "value": "123456",
+          "temporary": false
         }
-      ]
+      ],
+      "realmRoles": [
+        "admin"
+      ],
+      "requiredActions": []
     }
   ]
 }

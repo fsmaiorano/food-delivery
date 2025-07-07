@@ -14,6 +14,8 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(oi => oi.Quantity).IsRequired();
-        builder.Property(oi => oi.Price).IsRequired();
+        builder.Property(oi => oi.Price)
+            .IsRequired()
+            .HasColumnType("decimal(18,2)");
     }
 }

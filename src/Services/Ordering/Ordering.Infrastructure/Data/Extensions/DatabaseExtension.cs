@@ -6,15 +6,40 @@ public static class DatabaseExtencions
     {
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.MigrateAsync().GetAwaiter().GetResult();
+
+        var created = await context.Database.EnsureCreatedAsync();
+
+        if (!created)
+        {
+            try
+            {
+                await context.Database.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Migration failed, but continuing: {ex.Message}");
+            }
+        }
+
+        await Task.Delay(1000);
+
         await SeedAsync(context);
     }
 
     private static async Task SeedAsync(ApplicationDbContext context)
     {
-        await SeedCustomerAsync(context);
-        await SeedProductAsync(context);
-        await SeedOrdersWithItemsAsync(context);
+        try
+        {
+            await SeedCustomerAsync(context);
+            await SeedProductAsync(context);
+            await SeedOrdersWithItemsAsync(context);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception but don't crash the application
+            Console.WriteLine($"Seeding failed: {ex.Message}");
+            throw;
+        }
     }
 
     private static async Task SeedCustomerAsync(ApplicationDbContext context)

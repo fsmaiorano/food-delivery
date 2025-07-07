@@ -84,6 +84,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             });
 
         builder.Property(o => o.Status).HasDefaultValue(OrderStatus.Draft)
-            .HasConversion(s => s.ToString(), dbStatus => Enum.Parse<OrderStatus>(dbStatus));
+            .HasConversion(s => s.ToString(), dbStatus => Enum.Parse<OrderStatus>(dbStatus))
+            .HasSentinel(OrderStatus.Draft);
+
+        builder.Property(o => o.TotalPrice)
+            .HasColumnType("decimal(18,2)");
     }
 }

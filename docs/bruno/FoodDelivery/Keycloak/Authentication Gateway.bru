@@ -1,0 +1,22 @@
+meta {
+  name: Authentication Gateway
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://your-gateway-api/some-protected-endpoint
+  body: formUrlEncoded
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/x-www-form-urlencoded
+}
+
+body:json {
+  {
+    "username": "fsmaiorano",
+    "password": "123456"
+  }
+}

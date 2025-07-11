@@ -1,8 +1,33 @@
 @model dynamic
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Authentication";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<link rel="stylesheet" href="~/css/views/authentication.css" asp-append-version="true" />
+
+<div class="container">
+    <div class="form-container">
+        <div class="material-input">
+            <input type="text" id="name" placeholder="" />
+            <label for="name">Enter your name</label>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("name");
+            input.addEventListener("focus", function () {
+                this.classList.add("focused");
+            });
+            input.addEventListener("blur", function () {
+                if (this.value === "") {
+                    this.classList.remove("focused");
+                }
+            });
+        });
+    </script>
+}

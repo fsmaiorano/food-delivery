@@ -1,3 +1,70 @@
+:root {
+    /* Primary Brand Colors */
+    --color-primary: #007bff;
+    --color-primary-light: #339dff;
+    --color-primary-dark: #0056b3;
+
+    /* Secondary Brand Colors */
+    --color-secondary: #6c757d;
+    --color-secondary-light: #a6acb1;
+    --color-secondary-dark: #494f54;
+
+    /* Accent Colors (changed) */
+    --color-accent: #ff5722;
+    --color-accent-light: #ff8a50;
+    --color-accent-dark: #c41c00;
+
+    /* Neutral Colors */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-400: #ced4da;
+    --color-gray-500: #adb5bd;
+    --color-gray-600: #6c757d;
+    --color-gray-700: #495057;
+    --color-gray-800: #343a40;
+    --color-gray-900: #212529;
+
+    /* Feedback Colors */
+    --color-success: #28a745;
+    --color-warning: #ffc107;
+    --color-error: #dc3545;
+    --color-info: #17a2b8;
+
+    /* Text Colors */
+    --color-text: #212529;
+    --color-text-muted: #6c757d;
+    --color-heading: #111111;
+
+    /* Backgrounds */
+    --color-background: #ffffff;
+    --color-background-alt: #f8f9fa;
+
+    /* Border */
+    --color-border: #dee2e6;
+
+    /* Font families */
+    --font-sans: 'Inter', 'Segoe UI', sans-serif;
+    --font-serif: 'Georgia', serif;
+    --font-mono: 'Fira Code', monospace;
+
+    /* Font weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Responsive font sizes using clamp(min, preferred, max) */
+    --font-size-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+    --font-size-sm: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
+    --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --font-size-lg: clamp(1.125rem, 1rem + 0.7vw, 1.5rem);
+    --font-size-xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+    --font-size-2xl: clamp(2rem, 1.7rem + 1.2vw, 2.5rem);
+    --font-size-3xl: clamp(2.5rem, 2.2rem + 1.5vw, 3.5rem);
+}
+
 html {
     font-size: 14px;
 }
@@ -8,12 +75,20 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-
+body {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.6;
+    color: var(--color-text);
 }
 
 body {
@@ -23,18 +98,41 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
+    background-color: var(--color-background);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.root-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: red;
+    background-color: var(--color-background);
+}
+
+h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+}
+
+p {
+    font-size: var(--font-size-base);
+    margin-bottom: 1rem;
+}
+
+small {
+    font-size: var(--font-size-xs);
 }

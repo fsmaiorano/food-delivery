@@ -70,13 +70,13 @@
       "stopAtEntry": false
     },
     {
-      "name": "User.Api",
+      "name": "WebApp",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Services/User/User.Api/bin/Debug/net9.0/User.Api.dll",
+      "program": "${workspaceFolder}/src/Web/WebApp/bin/Debug/net9.0/WebApp.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/Services/User/User.Api",
+      "cwd": "${workspaceFolder}/src/Web/WebApp",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -92,7 +92,7 @@
         "Catalog.Api",
         "GatewayApi",
         "Discount.Grpc",
-        "User.Api"
+        "WebApp"
       ],
     }
   ]

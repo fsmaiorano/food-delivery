@@ -5,7 +5,6 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 
 builder.Services.AddControllersWithViews();
 
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -16,11 +15,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
-
 
 app.MapControllerRoute(
         name: "default",

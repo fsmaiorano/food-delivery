@@ -11,6 +11,16 @@ builder.Services.AddMarten(opt => { opt.Connection(builder.Configuration.GetConn
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 CreateProductEndpoint.MapEndpoints(app);
@@ -21,5 +31,12 @@ GetProductByIdEndpoint.MapEndpoints(app);
 GetProductByCategoryEndpoint.MapEndpoints(app);
 
 app.UseExceptionHandler(options => { });
+
+app.UseCors(cors =>
+{
+    cors.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 app.Run();

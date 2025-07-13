@@ -1,6 +1,149 @@
-<section class="dashboard">
-  <h1>Dashboard</h1>
-  <p>Welcome to the dashboard!</p>
-  <p>Here you can find an overview of your activities and statistics.</p>
-  <p>Stay tuned for more features coming soon!</p>
-</section>
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <mat-toolbar class="dashboard-header" color="primary">
+    <span class="title">
+      <mat-icon>restaurant_menu</mat-icon>
+      Product Dashboard
+    </span>
+    <span class="spacer"></span>
+    <button
+      mat-icon-button
+      (click)="refreshProducts()"
+      [disabled]="loading"
+      matTooltip="Refresh Products"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <mat-card class="filters-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>filter_list</mat-icon>
+          Filters
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="filter-controls">
+          <mat-form-field appearance="outline" class="category-filter">
+            <mat-label>Category</mat-label>
+            <mat-select
+              [(value)]="selectedCategory"
+              (selectionChange)="onCategoryChange($event.value)"
+            >
+              <mat-option value="">All Categories</mat-option>
+              <mat-option
+                *ngFor="let category of categories"
+                [value]="category"
+              >
+                {{ category }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="clearCategoryFilter()"
+            *ngIf="selectedCategory"
+            class="clear-filter-btn"
+          >
+            <mat-icon>clear</mat-icon>
+            Clear Filters
+          </button>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="results-summary" *ngIf="!loading">
+          <mat-icon>info</mat-icon>
+          <span>
+            Showing {{ products.length }} of {{ totalCount }} products
+            <span *ngIf="selectedCategory">
+              in "{{ selectedCategory }}" category</span
+            >
+          </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Loading products...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !loading">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-content">
+          <mat-icon color="warn">error</mat-icon>
+          <div class="error-text">
+            <h3>Oops! Something went wrong</h3>
+            <p>{{ error }}</p>
+          </div>
+          <button mat-raised-button color="primary" (click)="refreshProducts()">
+            <mat-icon>refresh</mat-icon>
+            Try Again
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-section" *ngIf="!loading && !error">
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="products.length === 0">
+      <mat-card class="empty-card">
+        <mat-card-content>
+          <div class="empty-content">
+            <mat-icon class="empty-icon">inventory_2</mat-icon>
+            <h2>No products found</h2>
+            <p *ngIf="selectedCategory; else noProductsGeneral">
+              No products found in the "{{ selectedCategory }}" category.
+            </p>
+            <ng-template #noProductsGeneral>
+              <p>No products are currently available.</p>
+            </ng-template>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="clearCategoryFilter()"
+              *ngIf="selectedCategory"
+            >
+              <mat-icon>clear</mat-icon>
+              View All Products
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" *ngIf="products.length > 0">
+      <app-product-card
+        *ngFor="let product of products; trackBy: trackByProductId"
+        [product]="product"
+      >
+      </app-product-card>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalCount > pageSize">
+      <mat-paginator
+        [length]="totalCount"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="onPageChange($event)"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

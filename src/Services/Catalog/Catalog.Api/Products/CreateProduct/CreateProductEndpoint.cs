@@ -25,7 +25,7 @@ public class CreateProductEndpoint
 
                     var result = await sender.Send(command, cancellationToken);
 
-                    return Results.Ok();
+                    return Results.Ok(result);
                 })
             .WithName("CreateProduct")
             .Produces<CreateProductResponse>(StatusCodes.Status201Created)

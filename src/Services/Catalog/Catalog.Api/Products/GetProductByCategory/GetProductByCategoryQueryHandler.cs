@@ -15,6 +15,9 @@ internal class GetProductByCategoryQueryHandler(
             .Where(p => p.Categories.Contains(query.Category))
             .ToListAsync(cancellationToken);
 
+        foreach (var product in products)
+            product.ImageFile = await MinioBucket.GetImageAsync(product.ImageFile) ?? string.Empty;
+
         return new GetProductByCategoryResult(products);
     }
 }

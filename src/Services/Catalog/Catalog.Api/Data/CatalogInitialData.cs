@@ -12,14 +12,13 @@ public class CatalogInitialData : IInitialData
 
         if (existingProductsCount == 0)
         {
-            session.Store(Products.ToArray());
-
             foreach (var product in Products)
             {
-                var storedImage = await MinioBucket.SendImageAsync(product.ImageFile);
+                var storedImage = await MinioBucket.SendImageAsync(product.ImageUrl);
                 product.ImageFile = storedImage.objectName;
+                session.Store(product);
             }
-
+            
             await session.SaveChangesAsync(cancellation);
         }
     }
@@ -32,7 +31,7 @@ public class CatalogInitialData : IInitialData
             Name = "Margherita Pizza",
             Categories = ["Pizza", "Italian", "Vegetarian"],
             Description = "Classic pizza with fresh mozzarella, tomato sauce, and basil leaves",
-            ImageFile = "https://cloudfront-us-east-1.images.arcpublishing.com/estadao/YANRMY3TBZGWBCM2UDY6LEZJMA.jpg",
+            ImageUrl = "https://cloudfront-us-east-1.images.arcpublishing.com/estadao/YANRMY3TBZGWBCM2UDY6LEZJMA.jpg",
             Price = 14.99m
         },
         new()
@@ -41,7 +40,7 @@ public class CatalogInitialData : IInitialData
             Name = "Pepperoni Pizza",
             Categories = ["Pizza", "Italian"],
             Description = "Traditional pizza topped with pepperoni slices and mozzarella cheese",
-            ImageFile = "https://www.cobsbread.com/us/wp-content//uploads/2022/09/Pepperoni-pizza-850x630-1.png",
+            ImageUrl = "https://www.cobsbread.com/us/wp-content//uploads/2022/09/Pepperoni-pizza-850x630-1.png",
             Price = 16.99m
         },
         new()
@@ -50,7 +49,7 @@ public class CatalogInitialData : IInitialData
             Name = "Caesar Salad",
             Categories = ["Salad", "Healthy", "Vegetarian"],
             Description = "Fresh romaine lettuce with caesar dressing, croutons, and parmesan cheese",
-            ImageFile = "https://cdn.loveandlemons.com/wp-content/uploads/2024/12/caesar-salad.jpg",
+            ImageUrl = "https://cdn.loveandlemons.com/wp-content/uploads/2024/12/caesar-salad.jpg",
             Price = 9.99m
         },
         new()
@@ -59,7 +58,7 @@ public class CatalogInitialData : IInitialData
             Name = "Chicken Burger",
             Categories = ["Burger", "Chicken"],
             Description = "Grilled chicken breast with lettuce, tomato, and mayo on a sesame bun",
-            ImageFile = "https://hips.hearstapps.com/hmg-prod/images/chicken-burgers-lead-667b185b5c64f.jpg",
+            ImageUrl = "https://hips.hearstapps.com/hmg-prod/images/chicken-burgers-lead-667b185b5c64f.jpg",
             Price = 12.99m
         },
         new()
@@ -68,7 +67,7 @@ public class CatalogInitialData : IInitialData
             Name = "Beef Tacos",
             Categories = ["Mexican", "Beef"],
             Description = "Three soft tacos filled with seasoned ground beef, lettuce, and cheese",
-            ImageFile = "https://www.onceuponachef.com/images/2023/08/Beef-Tacos.jpg",
+            ImageUrl = "https://www.onceuponachef.com/images/2023/08/Beef-Tacos.jpg",
             Price = 11.99m
         },
         new()
@@ -77,7 +76,7 @@ public class CatalogInitialData : IInitialData
             Name = "Spaghetti Carbonara",
             Categories = ["Pasta", "Italian"],
             Description = "Creamy pasta with pancetta, eggs, and parmesan cheese",
-            ImageFile =
+            ImageUrl =
                 "https://static01.nyt.com/images/2021/02/14/dining/carbonara-horizontal/carbonara-horizontal-mediumSquareAt3X-v2.jpg",
             Price = 15.99m
         },
@@ -87,7 +86,7 @@ public class CatalogInitialData : IInitialData
             Name = "Greek Salad",
             Categories = ["Salad", "Greek", "Healthy", "Vegetarian"],
             Description = "Fresh vegetables with feta cheese, olives, and olive oil dressing",
-            ImageFile =
+            ImageUrl =
                 "https://www.simplyrecipes.com/thmb/0NrKQlJ691l6L9tZXpL06uOuWis=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Easy-Greek-Salad-LEAD-2-4601eff771fd4de38f9722e8cafc897a.jpg",
             Price = 10.99m
         },
@@ -97,7 +96,7 @@ public class CatalogInitialData : IInitialData
             Name = "BBQ Ribs",
             Categories = ["BBQ", "Pork"],
             Description = "Tender pork ribs with smoky BBQ sauce and coleslaw",
-            ImageFile = "https://www.onceuponachef.com/images/2022/06/baby-back-ribs-18-1200x1397.jpg",
+            ImageUrl = "https://www.onceuponachef.com/images/2022/06/baby-back-ribs-18-1200x1397.jpg",
             Price = 19.99m
         },
         new()
@@ -106,7 +105,7 @@ public class CatalogInitialData : IInitialData
             Name = "Fish and Chips",
             Categories = ["Seafood", "British"],
             Description = "Beer-battered fish with crispy fries and tartar sauce",
-            ImageFile = "https://upload.wikimedia.org/wikipedia/commons/f/ff/Fish_and_chips_blackpool.jpg",
+            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/ff/Fish_and_chips_blackpool.jpg",
             Price = 13.99m
         },
         new()
@@ -115,7 +114,7 @@ public class CatalogInitialData : IInitialData
             Name = "Chocolate Cake",
             Categories = ["Dessert", "Chocolate"],
             Description = "Rich chocolate cake with chocolate frosting and berries",
-            ImageFile = "https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/easy_chocolate_cake_31070_16x9.jpg",
+            ImageUrl = "https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/easy_chocolate_cake_31070_16x9.jpg",
             Price = 6.99m
         }
     };

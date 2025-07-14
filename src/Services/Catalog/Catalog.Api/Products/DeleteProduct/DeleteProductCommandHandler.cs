@@ -14,7 +14,8 @@ internal class DeleteProductCommandHandler(IDocumentSession session)
 
         if (product is null)
             throw new ProductNotFoundException(command.Id);
-
+        
+        await MinioBucket.DeleteImageAsync(product.ImageFile);
         session.Delete(product);
         await session.SaveChangesAsync(cancellationToken);
         return new DeleteProductResult(true);

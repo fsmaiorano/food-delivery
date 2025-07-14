@@ -27,11 +27,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Seed data in development environment
-if (app.Environment.IsDevelopment())
-{
-    await app.SeedDataAsync();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     await app.SeedDataAsync();
+// }
 
 CreateProductEndpoint.MapEndpoints(app);
 UpdateProductEndpoint.MapEndpoints(app);

@@ -5,11 +5,12 @@ namespace BuildingBlocks.Storage.Minio;
 
 public sealed record MinioBucket
 {
+    private const string BucketName = "food-delivery";
+    
     public static async Task<(string objectName, string objectUrl)> SendImageAsync(string imageUrl)
     {
         var minio = await CreateMinioClient();
 
-        const string bucketName = "food-delivery";
         var fileExtension = Path.GetExtension(imageUrl);
         var objectName = $"{Guid.NewGuid()}{fileExtension}";
 
@@ -35,12 +36,12 @@ public sealed record MinioBucket
             response.EnsureSuccessStatusCode();
             await using var imageStream = await response.Content.ReadAsStreamAsync();
 
-            var found = await minio.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucketName));
+            var found = await minio.BucketExistsAsync(new BucketExistsArgs().WithBucket(BucketName));
             if (!found)
-                await minio.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucketName));
+                await minio.MakeBucketAsync(new MakeBucketArgs().WithBucket(BucketName));
 
             await minio.PutObjectAsync(new PutObjectArgs()
-                .WithBucket(bucketName)
+                .WithBucket(BucketName)
                 .WithObject(objectName)
                 .WithStreamData(imageStream)
                 .WithObjectSize(response.Content.Headers.ContentLength ?? -1)
@@ -48,8 +49,8 @@ public sealed record MinioBucket
 
             Console.WriteLine($"Imagem '{objectName}' enviada para MinIO com sucesso!");
 
-            var objectUrl = await GetImage(objectName);
-            return (objectName, objectUrl);
+            var objectUrl = await GetImageAsync(objectName);
+            return (objectName, objectUrl)!;
         }
         catch (Exception e)
         {
@@ -58,16 +59,14 @@ public sealed record MinioBucket
         }
     }
 
-    public static async Task<string?> GetImage(string imageName)
+    public static async Task<string?> GetImageAsync(string imageName)
     {
         var minio = await CreateMinioClient();
-
-        const string bucketName = "food-delivery";
-
+        
         try
         {
             var presignedUrl = await minio.PresignedGetObjectAsync(new PresignedGetObjectArgs()
-                .WithBucket(bucketName)
+                .WithBucket(BucketName)
                 .WithObject(imageName)
                 .WithExpiry(60 * 60)); // URL válida por 1 hora
 
@@ -84,12 +83,11 @@ public sealed record MinioBucket
     public static async Task<string> GetImageToDownload(string imageName)
     {
         var minio = await CreateMinioClient();
-        const string bucketName = "food-delivery";
 
         try
         {
             var presignedUrl = await minio.PresignedGetObjectAsync(new PresignedGetObjectArgs()
-                .WithBucket(bucketName)
+                .WithBucket(BucketName)
                 .WithObject(imageName)
                 .WithExpiry(60 * 60) // URL valid for 1 hour
                 .WithHeaders(new Dictionary<string, string>
@@ -104,6 +102,25 @@ public sealed record MinioBucket
         {
             Console.WriteLine($"Error generating download URL: {e.Message}");
             return string.Empty;
+        }
+    }
+    
+    public static async Task DeleteImageAsync(string imageName)
+    {
+        var minio = await CreateMinioClient();
+        
+
+        try
+        {
+            await minio.RemoveObjectAsync(new RemoveObjectArgs()
+                .WithBucket(BucketName)
+                .WithObject(imageName));
+
+            Console.WriteLine($"Imagem '{imageName}' removida com sucesso!");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Erro ao remover imagem: {e.Message}");
         }
     }
 

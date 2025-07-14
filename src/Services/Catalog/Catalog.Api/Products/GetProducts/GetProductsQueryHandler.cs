@@ -13,6 +13,10 @@ internal class GetProductsQueryHandler(IDocumentSession session)
     {
         var products = await session.Query<Product>().ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10,
             cancellationToken);
+
+        foreach (var product in products)
+            product.ImageFile = await MinioBucket.GetImageAsync(product.ImageFile) ?? string.Empty;
+
         return new GetProductsResult(products);
     }
 }

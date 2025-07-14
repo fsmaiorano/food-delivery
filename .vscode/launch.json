@@ -68,19 +68,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "stopAtEntry": false
-    },
-    {
-      "name": "WebApp",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/Web/WebApp/bin/Debug/net9.0/WebApp.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}/src/Web/WebApp",
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "stopAtEntry": false
     }
   ],
   "compounds": [
@@ -91,8 +78,7 @@
         "Basket.Api",
         "Catalog.Api",
         "GatewayApi",
-        "Discount.Grpc",
-        "WebApp"
+        "Discount.Grpc"
       ],
     }
   ]

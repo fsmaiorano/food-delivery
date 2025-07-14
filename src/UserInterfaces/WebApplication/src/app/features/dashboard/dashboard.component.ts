@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
 
-  // Pagination
   pageIndex = 0;
   pageSize = 9;
   totalCount = 0;
@@ -46,12 +45,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToServiceState(): void {
-    // Subscribe to loading state
     this.productService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe((loading) => (this.loading = loading));
 
-    // Subscribe to error state
     this.productService.error$
       .pipe(takeUntil(this.destroy$))
       .subscribe((error) => {
@@ -67,10 +64,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadData(): void {
-    // Load products first
     this.loadProducts();
 
-    // Load categories separately
     this.productService
       .getCategories()
       .pipe(takeUntil(this.destroy$))
@@ -98,7 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onCategoryChange(category: string): void {
     this.selectedCategory = category;
-    this.pageIndex = 0; // Reset to first page when changing category
+    this.pageIndex = 0;
     this.loadProducts();
   }
 

@@ -13,7 +13,7 @@ import { Product } from '../../shared/models/product.model';
         <div class="product-image-container">
           <img
             mat-card-image
-            [src]="getImageUrl(product.imageFile)"
+            [src]="(product.imageUrl ?? getImageUrl(product.imageFile)) || ''"
             [alt]="product.name"
             class="product-image"
             (error)="onImageError($event)"
@@ -195,26 +195,22 @@ export class ProductCardComponent {
   @Input() product!: Product;
 
   getImageUrl(imageFile?: string): string {
-    // First try to use imageUrl if available
     if (this.product.imageUrl) {
       return this.product.imageUrl;
     }
 
-    // If imageFile is provided, construct URL (in production this would be from a CDN or file service)
     if (imageFile) {
       return `https://via.placeholder.com/300x200/e3f2fd/1976d2?text=${encodeURIComponent(
         this.product.name
       )}`;
     }
 
-    // Fallback to placeholder
     return `https://via.placeholder.com/300x200/e3f2fd/1976d2?text=${encodeURIComponent(
       this.product.name
     )}`;
   }
 
   onImageError(event: any): void {
-    // Fallback to a default placeholder if image fails to load
     event.target.src = `https://via.placeholder.com/300x200/f5f5f5/999999?text=${encodeURIComponent(
       this.product.name
     )}`;

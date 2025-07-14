@@ -12,3 +12,4 @@ global using Catalog.Api.Products.DeleteProduct;
 global using Catalog.Api.Products.GetProductById;
 global using Catalog.Api.Products.UpdateProduct;
 global using Catalog.Api.Products.GetProductByCategory;
+global using Catalog.Api.Data;

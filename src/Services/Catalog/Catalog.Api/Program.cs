@@ -6,8 +6,12 @@ builder.Services.AddMediator(assembly);
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
-builder.Services.AddMarten(opt => { opt.Connection(builder.Configuration.GetConnectionString("Database")!); })
-    .UseLightweightSessions();
+builder.Services.AddMarten(opts =>
+{
+    opts.Connection(builder.Configuration.GetConnectionString("Database")!);
+})
+.UseLightweightSessions()
+.InitializeWith(new CatalogInitialData());
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
@@ -22,6 +26,12 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Seed data in development environment
+if (app.Environment.IsDevelopment())
+{
+    await app.SeedDataAsync();
+}
 
 CreateProductEndpoint.MapEndpoints(app);
 UpdateProductEndpoint.MapEndpoints(app);

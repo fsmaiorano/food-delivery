@@ -14,9 +14,8 @@ internal class GetProductByIdQueryHandler(IDocumentSession session)
         if (product is null)
             throw new ProductNotFoundException(query.Id);
         
-        product.ImageUrl = await MinioBucket.GetImageAsync(product.ImageFile) ?? string.Empty;
+        product.ImageUrl = await MinioBucket.GetImageAsync(product.ImageUrl) ?? string.Empty;
 
-        Console.WriteLine($"ImageFile: {product.ImageFile}");
         Console.WriteLine($"ImageUrl: {product.ImageUrl}");
 
         return new GetProductByIdResult(product);

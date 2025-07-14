@@ -10,29 +10,25 @@ public static class UpdateProductImages
     {
         Console.WriteLine("Starting image update process for all products...");
         await using var session = store.LightweightSession();
-        
+
         var products = await session.Query<Product>().ToListAsync(cancellation);
-        
+
         Console.WriteLine($"Found {products.Count} products to update");
-        
+
         foreach (var product in products)
         {
-            string originalImageUrl = product.ImageFile;
-            
-            // Check if ImageFile looks like a URL rather than a GUID-based object name
+            var originalImageUrl = product.ImageUrl;
+
             if (originalImageUrl.StartsWith("http"))
             {
                 Console.WriteLine($"Processing product: {product.Id} - {product.Name}");
                 Console.WriteLine($"Original ImageFile: {originalImageUrl}");
-                
+
                 try
                 {
-                    // Upload to MinIO and get the object name and URL
                     var storedImage = await MinioBucket.SendImageAsync(originalImageUrl);
-                    product.ImageFile = storedImage.objectName;
-                    product.ImageUrl = storedImage.objectUrl;
-                    
-                    Console.WriteLine($"Updated ImageFile: {product.ImageFile}");
+                    product.ImageUrl = storedImage.objectName;
+
                     Console.WriteLine($"Updated ImageUrl: {product.ImageUrl}");
                 }
                 catch (Exception ex)
@@ -42,12 +38,11 @@ public static class UpdateProductImages
             }
             else
             {
-                // ImageFile is already an object name, just update the ImageUrl
-                Console.WriteLine($"Product {product.Id} already has object name: {product.ImageFile}");
-                product.ImageUrl = await MinioBucket.GetImageAsync(product.ImageFile) ?? string.Empty;
+                Console.WriteLine($"Product {product.Id} already has object name: {product.ImageUrl}");
+                product.ImageUrl = await MinioBucket.GetImageAsync(product.ImageUrl) ?? string.Empty;
             }
         }
-        
+
         await session.SaveChangesAsync(cancellation);
         Console.WriteLine("Product image update completed");
     }

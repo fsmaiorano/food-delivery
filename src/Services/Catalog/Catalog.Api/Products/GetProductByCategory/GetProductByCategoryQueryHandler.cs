@@ -16,7 +16,7 @@ internal class GetProductByCategoryQueryHandler(
             .ToListAsync(cancellationToken);
 
         foreach (var product in products)
-            product.ImageFile = await MinioBucket.GetImageAsync(product.ImageFile) ?? string.Empty;
+            product.ImageUrl = await MinioBucket.GetImageAsync(product.ImageUrl) ?? string.Empty;
 
         return new GetProductByCategoryResult(products);
     }

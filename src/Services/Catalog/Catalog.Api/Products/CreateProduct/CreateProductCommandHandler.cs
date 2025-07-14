@@ -26,7 +26,7 @@ internal class CreateProductCommandHandler(
             Name = command.Name,
             Categories = command.Categories,
             Description = command.Description,
-            ImageFile = storedImage.objectName,
+            ImageUrl = storedImage.objectName,
             Price = command.Price
         };
 

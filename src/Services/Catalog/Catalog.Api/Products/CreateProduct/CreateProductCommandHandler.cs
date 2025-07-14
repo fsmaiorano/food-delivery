@@ -19,12 +19,14 @@ internal class CreateProductCommandHandler(
         var validator = new CreateProductValidator(command);
         validator.Validate();
 
+        var storedImage = await MinioBucket.SendImageAsync(command.ImageUrl);
+
         var product = new Product()
         {
             Name = command.Name,
             Categories = command.Categories,
             Description = command.Description,
-            ImageFile = command.ImageUrl,
+            ImageFile = storedImage.objectName,
             Price = command.Price
         };
 

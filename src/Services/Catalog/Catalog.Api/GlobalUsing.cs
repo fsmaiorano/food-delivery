@@ -13,3 +13,4 @@ global using Catalog.Api.Products.GetProductById;
 global using Catalog.Api.Products.UpdateProduct;
 global using Catalog.Api.Products.GetProductByCategory;
 global using Catalog.Api.Data;
+global using BuildingBlocks.Storage.Minio;

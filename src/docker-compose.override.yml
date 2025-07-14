@@ -23,6 +23,20 @@ services:
     volumes:
       - postgres_catalog:/var/lib/postgresql/data
   
+  minio:
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
+      - MINIO_DEFAULT_BUCKETS=food-delivery-catalog
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+  
   basketdb:
     container_name: basketdb
     environment:
@@ -74,6 +88,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
     depends_on:
       - catalogdb
+      - minio
     ports:
       - "6000:8080"
       - "6060:8081"

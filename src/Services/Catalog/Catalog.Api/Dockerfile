@@ -9,6 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
 COPY ["BuildingBlocks/BuildingBlocks.Mediator/BuildingBlocks.Mediator.csproj", "BuildingBlocks/BuildingBlocks.Mediator/"]
+COPY ["BuildingBlocks/BuildingBlocks.Storage/BuildingBlocks.Storage.csproj", "BuildingBlocks/BuildingBlocks.Storage/"]
 COPY ["Services/Catalog/Catalog.Api/Catalog.Api.csproj", "Services/Catalog/Catalog.Api/"]
 RUN dotnet restore "./Services/Catalog/Catalog.Api/Catalog.Api.csproj"
 COPY . .

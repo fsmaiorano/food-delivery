@@ -5,6 +5,9 @@ services:
   catalogdb:
     image: postgres:latest
   
+  minio:
+    image: minio/minio:latest
+  
   basketdb:
     image: postgres:latest
 
@@ -58,5 +61,6 @@ volumes:
   postgres_catalog:
   postgres_basket:
   postgres_keycloak:
+  minio_data:
   #  sql_order:
   

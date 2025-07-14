@@ -11,7 +11,6 @@ public static class Extensions
 
     await using var session = store.LightweightSession();
 
-    // Check if we already have products to avoid duplicates
     var existingProductsCount = await session.Query<Product>().CountAsync();
 
     if (existingProductsCount == 0)

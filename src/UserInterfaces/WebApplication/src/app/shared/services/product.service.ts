@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+  HttpBackend,
+  HttpContext,
+} from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -14,6 +19,7 @@ import {
 })
 export class ProductService {
   private readonly apiUrl = 'https://localhost:5050';
+  private http: HttpClient;
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -21,7 +27,10 @@ export class ProductService {
   private errorSubject = new BehaviorSubject<string | null>(null);
   public error$ = this.errorSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(handler: HttpBackend) {
+    // Create custom HttpClient that bypasses default interceptors and accepts self-signed certificates
+    this.http = new HttpClient(handler);
+  }
 
   getProducts(
     pageIndex: number = 0,
@@ -39,6 +48,7 @@ export class ProductService {
     const url = `${this.apiUrl}/products`;
     console.log('Fetching products:', 'Page:', pageIndex, 'Size:', pageSize);
     console.log('Request URL:', url, 'Params:', params.toString());
+
     return this.http.get<any>(url, { params }).pipe(
       map((response) => {
         console.log('Response received:', response);
@@ -48,17 +58,15 @@ export class ProductService {
           products: this.transformApiProducts(response.products || response),
           pageIndex: pageIndex,
           pageSize: pageSize,
-          count: response.count || response.length || 0,
+          count:
+            response.count || (Array.isArray(response) ? response.length : 0),
         };
 
         return transformedResponse;
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next('Failed to load products. Please try again.');
-        console.error('Error fetching products:', error);
-
-        return of(this.getMockProductResponse());
+        throw error;
       })
     );
   }
@@ -95,31 +103,15 @@ export class ProductService {
           products: this.transformApiProducts(response.products || response),
           pageIndex: pageIndex,
           pageSize: pageSize,
-          count: response.count || response.length || 0,
+          count:
+            response.count || (Array.isArray(response) ? response.length : 0),
         };
 
         return transformedResponse;
       }),
       catchError((error) => {
-        debugger;
         this.loadingSubject.next(false);
-        this.errorSubject.next(
-          'Failed to load products by category. Please try again.'
-        );
-        console.error('Error fetching products by category:', error);
-
-        const mockData = this.getMockProductResponse();
-        const filteredProducts = mockData.products.filter((p) =>
-          p.category.some((c) =>
-            c.toLowerCase().includes(category.toLowerCase())
-          )
-        );
-
-        return of({
-          ...mockData,
-          products: filteredProducts,
-          count: filteredProducts.length,
-        });
+        return [];
       })
     );
   }
@@ -139,15 +131,7 @@ export class ProductService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next(
-          'Failed to load product details. Please try again.'
-        );
-        console.error('Error fetching product by ID:', error);
-
-        const mockProduct = this.getMockProductResponse().products.find(
-          (p) => p.id === id
-        );
-        return of(mockProduct || null);
+        throw error;
       })
     );
   }
@@ -286,8 +270,6 @@ export class ProductService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next('Failed to create product. Please try again.');
-        console.error('Error creating product:', error);
         throw error;
       })
     );
@@ -309,8 +291,6 @@ export class ProductService {
         }),
         catchError((error) => {
           this.loadingSubject.next(false);
-          this.errorSubject.next('Failed to update product. Please try again.');
-          console.error('Error updating product:', error);
           throw error;
         })
       );
@@ -327,8 +307,6 @@ export class ProductService {
       }),
       catchError((error) => {
         this.loadingSubject.next(false);
-        this.errorSubject.next('Failed to delete product. Please try again.');
-        console.error('Error deleting product:', error);
         throw error;
       })
     );

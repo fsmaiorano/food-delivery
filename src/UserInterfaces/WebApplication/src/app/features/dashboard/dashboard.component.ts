@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   error: string | null = null;
 
   pageIndex = 0;
-  pageSize = 9;
+  pageSize = 100;
   totalCount = 0;
   pageSizeOptions = [6, 9, 12, 24];
 

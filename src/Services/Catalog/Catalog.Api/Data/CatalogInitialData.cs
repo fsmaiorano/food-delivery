@@ -18,7 +18,7 @@ public class CatalogInitialData : IInitialData
                 product.ImageUrl = storedImage.objectName;
                 session.Store(product);
             }
-            
+
             await session.SaveChangesAsync(cancellation);
         }
     }

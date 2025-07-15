@@ -5,7 +5,18 @@
       <mat-icon>restaurant_menu</mat-icon>
       Dashboard
     </span>
+
     <span class="spacer"></span>
+    <app-filter
+      class="filter"
+      [categories]="categories"
+      [selectedCategory]="selectedCategory"
+      [loading]="loading"
+      [products]="products"
+      [totalCount]="totalCount"
+      (categoryChange)="onCategoryChange($event)"
+      (clearFilter)="clearCategoryFilter()"
+    ></app-filter>
     <button
       mat-icon-button
       (click)="refreshProducts()"
@@ -16,23 +27,11 @@
     </button>
   </mat-toolbar>
 
-  <!-- Filters Section -->
-
   <!-- Loading State -->
   <div class="loading-container" *ngIf="loading">
     <mat-spinner diameter="50"></mat-spinner>
     <p class="loading-text">Loading products...</p>
   </div>
-
-  <app-filter
-    [categories]="categories"
-    [selectedCategory]="selectedCategory"
-    [loading]="loading"
-    [products]="products"
-    [totalCount]="totalCount"
-    (categoryChange)="onCategoryChange($event)"
-    (clearFilter)="clearCategoryFilter()"
-  ></app-filter>
 
   <!-- Error State -->
   <div class="error-container" *ngIf="error && !loading">

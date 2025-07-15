@@ -7,13 +7,19 @@ import { Product, ProductResponse } from '../../shared/models/product.model';
 import { Subject, takeUntil } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FilterComponent } from './filter/filter.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ProductCardComponent],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ProductCardComponent,
+    FilterComponent,
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -83,12 +89,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         )
       : this.productService.getProducts(this.pageIndex, this.pageSize);
 
-    request
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response: ProductResponse) => {
-        this.products = response.products;
-        this.totalCount = response.count;
-      });
+    request.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response: ProductResponse) => {
+        this.products = response.products || [];
+        this.totalCount = response.count || 0;
+      },
+      error: () => {
+        // Error is already handled by the service and shown via snackbar
+        this.products = [];
+        this.totalCount = 0;
+      },
+    });
   }
 
   onCategoryChange(category: string): void {

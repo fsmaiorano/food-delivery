@@ -3,7 +3,7 @@
   <mat-toolbar class="dashboard-header" color="primary">
     <span class="title">
       <mat-icon>restaurant_menu</mat-icon>
-      Product Dashboard
+      Dashboard
     </span>
     <span class="spacer"></span>
     <button
@@ -17,63 +17,22 @@
   </mat-toolbar>
 
   <!-- Filters Section -->
-  <div class="filters-section">
-    <mat-card class="filters-card">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>filter_list</mat-icon>
-          Filters
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="filter-controls">
-          <mat-form-field appearance="outline" class="category-filter">
-            <mat-label>Category</mat-label>
-            <mat-select
-              [(value)]="selectedCategory"
-              (selectionChange)="onCategoryChange($event.value)"
-            >
-              <mat-option value="">All Categories</mat-option>
-              <mat-option
-                *ngFor="let category of categories"
-                [value]="category"
-              >
-                {{ category }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <button
-            mat-stroked-button
-            color="accent"
-            (click)="clearCategoryFilter()"
-            *ngIf="selectedCategory"
-            class="clear-filter-btn"
-          >
-            <mat-icon>clear</mat-icon>
-            Clear Filters
-          </button>
-        </div>
-
-        <!-- Results Summary -->
-        <div class="results-summary" *ngIf="!loading">
-          <mat-icon>info</mat-icon>
-          <span>
-            Showing {{ products.length }} of {{ totalCount }} products
-            <span *ngIf="selectedCategory">
-              in "{{ selectedCategory }}" category</span
-            >
-          </span>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
 
   <!-- Loading State -->
   <div class="loading-container" *ngIf="loading">
     <mat-spinner diameter="50"></mat-spinner>
     <p class="loading-text">Loading products...</p>
   </div>
+
+  <app-filter
+    [categories]="categories"
+    [selectedCategory]="selectedCategory"
+    [loading]="loading"
+    [products]="products"
+    [totalCount]="totalCount"
+    (categoryChange)="onCategoryChange($event)"
+    (clearFilter)="clearCategoryFilter()"
+  ></app-filter>
 
   <!-- Error State -->
   <div class="error-container" *ngIf="error && !loading">

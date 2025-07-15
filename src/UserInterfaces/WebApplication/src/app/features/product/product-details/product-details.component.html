@@ -1,0 +1,92 @@
+<div class="product-details-container">
+  <!-- Header -->
+  <div class="header">
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="goBack()"
+      class="back-button"
+      aria-label="Go back"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="title">Product Details</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Loading product details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !loading">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-content">
+          <mat-icon color="warn">error</mat-icon>
+          <div class="error-text">
+            <h3>Oops! Something went wrong</h3>
+            <p>{{ error }}</p>
+          </div>
+          <button mat-raised-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Go Back
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Product Content -->
+  <div class="product-content" *ngIf="product && !loading">
+    <!-- Product Image -->
+    <div class="product-image-section">
+      <img
+        alt="{{ product.name }}"
+        [src]="
+          product.imageFile ||
+          product.imageUrl ||
+          'assets/images/placeholder.jpg'
+        "
+        [alt]="product.name"
+        [title]="product.name"
+        class="product-image"
+        onerror="this.src='assets/images/placeholder.jpg'"
+      />
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info-section">
+      <h2 class="product-name">{{ product.name }}</h2>
+
+      <div class="product-category">
+        <mat-icon>category</mat-icon>
+        <span>{{ getCategoryDisplay() }}</span>
+      </div>
+
+      <div class="product-price">${{ product.price | number : "1.2-2" }}</div>
+
+      <p class="product-description">{{ product.description }}</p>
+
+      <!-- We don't have stock information in our model currently -->
+      <div class="product-info">
+        <div class="stock-info">
+          <h3>Product Information</h3>
+          <p>
+            <strong>SKU:</strong> {{ product.id.substring(0, 8).toUpperCase() }}
+          </p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" (click)="addToCart()">
+          <mat-icon>shopping_cart</mat-icon>
+          Add to Cart
+        </button>
+
+        <button mat-stroked-button (click)="goBack()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>

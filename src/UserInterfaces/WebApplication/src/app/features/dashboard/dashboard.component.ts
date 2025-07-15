@@ -95,7 +95,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.totalCount = response.count || 0;
       },
       error: () => {
-        // Error is already handled by the service and shown via snackbar
         this.products = [];
         this.totalCount = 0;
       },

@@ -2,15 +2,20 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { Product } from '../../shared/models/product.model';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, RouterModule],
   template: `
     <mat-card class="product-card" [class.hover]="true">
       <mat-card-header>
-        <div class="product-image-container">
+        <div
+          class="product-image-container"
+          (click)="viewDetails()"
+          style="cursor: pointer;"
+        >
           <img
             mat-card-image
             [src]="(product.imageUrl ?? getImageUrl(product.imageFile)) || ''"
@@ -51,7 +56,12 @@ import { Product } from '../../shared/models/product.model';
           <mat-icon>add_shopping_cart</mat-icon>
           Add to Cart
         </button>
-        <button mat-stroked-button color="accent" class="view-details-btn">
+        <button
+          mat-stroked-button
+          color="accent"
+          class="view-details-btn"
+          [routerLink]="['/products', product.id]"
+        >
           <mat-icon>visibility</mat-icon>
           View Details
         </button>
@@ -194,6 +204,8 @@ import { Product } from '../../shared/models/product.model';
 export class ProductCardComponent {
   @Input() product!: Product;
 
+  constructor(private router: Router) {}
+
   getImageUrl(imageFile?: string): string {
     if (this.product.imageUrl) {
       return this.product.imageUrl;
@@ -214,5 +226,9 @@ export class ProductCardComponent {
     event.target.src = `https://via.placeholder.com/300x200/f5f5f5/999999?text=${encodeURIComponent(
       this.product.name
     )}`;
+  }
+
+  viewDetails(): void {
+    this.router.navigate(['/products', this.product.id]);
   }
 }

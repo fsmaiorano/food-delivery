@@ -119,17 +119,17 @@ export class ProductService {
   getProductById(id: string): Observable<Product | null> {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
-
     const url = `${this.apiUrl}/products/${id}`;
     console.log('Fetching product by ID:', id);
     console.log('Request URL:', url);
     return this.http.get<any>(`${url}`).pipe(
-      map((product) => {
-        console.log('Product received:', product);
+      map((response) => {
+        console.log('Product received:', response.product);
         this.loadingSubject.next(false);
-        return this.transformApiProduct(product);
+        return this.transformApiProduct(response.product);
       }),
       catchError((error) => {
+        debugger;
         this.loadingSubject.next(false);
         throw error;
       })

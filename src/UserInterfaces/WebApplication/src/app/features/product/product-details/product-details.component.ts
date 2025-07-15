@@ -47,6 +47,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   private loadProductDetails(productId: string): void {
+    debugger;
     this.productService
       .getProductById(productId)
       .pipe(takeUntil(this.destroy$))

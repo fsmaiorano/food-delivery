@@ -1,4 +1,13 @@
 .filters-section {
   .filter-controls {
+    .category-filter {
+      ::ng-deep .mat-mdc-select-arrow-wrapper {
+        display: none;
+      }
+
+      ::ng-deep .mat-mdc-select-value {
+        padding-right: 8px;
+      }
+    }
   }
 }

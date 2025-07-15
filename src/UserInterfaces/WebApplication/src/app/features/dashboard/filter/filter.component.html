@@ -11,17 +11,16 @@
           {{ category }}
         </mat-option>
       </mat-select>
+      <button
+        *ngIf="selectedCategory"
+        matSuffix
+        mat-icon-button
+        color="accent"
+        aria-label="Clear"
+        (click)="clearCategoryFilter(); $event.stopPropagation()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
-
-    <button
-      mat-stroked-button
-      color="accent"
-      (click)="clearCategoryFilter()"
-      *ngIf="selectedCategory"
-      class="clear-filter-btn"
-    >
-      <mat-icon>clear</mat-icon>
-      Clear Filters
-    </button>
   </div>
 </div>

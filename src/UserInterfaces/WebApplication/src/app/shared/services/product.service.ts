@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpParams,
-  HttpBackend,
-  HttpContext,
-} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpBackend } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 import {
   Product,
   ProductResponse,
@@ -28,7 +22,6 @@ export class ProductService {
   public error$ = this.errorSubject.asObservable();
 
   constructor(handler: HttpBackend) {
-    // Create custom HttpClient that bypasses default interceptors and accepts self-signed certificates
     this.http = new HttpClient(handler);
   }
 
@@ -172,90 +165,6 @@ export class ProductService {
         apiProduct.Categories ||
         [],
       categories: apiProduct.categories || apiProduct.Categories,
-    };
-  }
-
-  private getMockProductResponse(): ProductResponse {
-    const mockProducts: Product[] = [
-      // {
-      //   id: '0197ac7d-aa70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Margherita Pizza',
-      //   description:
-      //     'Classic pizza with tomato sauce, mozzarella cheese, and fresh basil',
-      //   imageFile: 'margherita-pizza.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/e3f2fd/1976d2?text=Margherita+Pizza',
-      //   price: 12.99,
-      //   category: ['c1', 'c2'], // Using category IDs as per API
-      //   categories: ['c1', 'c2'],
-      // },
-      // {
-      //   id: '0297ac7d-bb70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Caesar Salad',
-      //   description:
-      //     'Fresh romaine lettuce with caesar dressing, croutons, and parmesan cheese',
-      //   imageFile: 'caesar-salad.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/e8f5e8/4caf50?text=Caesar+Salad',
-      //   price: 8.99,
-      //   category: ['c3', 'c4'],
-      //   categories: ['c3', 'c4'],
-      // },
-      // {
-      //   id: '0397ac7d-cc70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Chicken Burger',
-      //   description:
-      //     'Grilled chicken breast with lettuce, tomato, and special sauce',
-      //   imageFile: 'chicken-burger.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/fff3e0/ff9800?text=Chicken+Burger',
-      //   price: 10.99,
-      //   category: ['c1', 'c5'],
-      //   categories: ['c1', 'c5'],
-      // },
-      // {
-      //   id: '0497ac7d-dd70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Spaghetti Carbonara',
-      //   description:
-      //     'Classic Italian pasta with eggs, cheese, pancetta, and black pepper',
-      //   imageFile: 'spaghetti-carbonara.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/fce4ec/e91e63?text=Spaghetti+Carbonara',
-      //   price: 14.99,
-      //   category: ['c2', 'c6'],
-      //   categories: ['c2', 'c6'],
-      // },
-      // {
-      //   id: '0597ac7d-ee70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Fish and Chips',
-      //   description:
-      //     'Beer-battered fish served with crispy chips and tartar sauce',
-      //   imageFile: 'fish-and-chips.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/e3f2fd/2196f3?text=Fish+and+Chips',
-      //   price: 16.99,
-      //   category: ['c7', 'c8'],
-      //   categories: ['c7', 'c8'],
-      // },
-      // {
-      //   id: '0697ac7d-ff70-41fb-8be5-d97ffabe9fde',
-      //   name: 'Chocolate Cake',
-      //   description:
-      //     'Rich chocolate cake with chocolate frosting and chocolate chips',
-      //   imageFile: 'chocolate-cake.jpg',
-      //   imageUrl:
-      //     'https://via.placeholder.com/300x200/efebe9/8d6e63?text=Chocolate+Cake',
-      //   price: 6.99,
-      //   category: ['c9', 'c10'],
-      //   categories: ['c9', 'c10'],
-      // },
-    ];
-
-    return {
-      products: mockProducts,
-      pageIndex: 0,
-      pageSize: 10,
-      count: mockProducts.length,
     };
   }
 

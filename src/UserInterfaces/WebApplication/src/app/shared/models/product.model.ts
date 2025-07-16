@@ -5,8 +5,8 @@ export interface Product {
   imageFile?: string;
   imageUrl?: string;
   price: number;
-  category: string[]; // Keep this for frontend display
-  categories?: string[]; // API format
+  category: string[];
+  categories?: string[];
 }
 
 export interface ProductResponse {
@@ -16,7 +16,6 @@ export interface ProductResponse {
   count: number;
 }
 
-// API request/response interfaces to match the actual API
 export interface CreateProductRequest {
   Name: string;
   Categories: string[];

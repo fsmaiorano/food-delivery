@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
-import { ProductCardComponent } from '../../shared/components/product-card.component';
 import { ProductService } from '../../shared/services/product.service';
 import { Product, ProductResponse } from '../../shared/models/product.model';
 import { Subject, takeUntil } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterComponent } from './filter/filter.component';
+import { ProductCardComponent } from '../product/product-card/product-card.component';
 
 @Component({
   selector: 'app-dashboard',

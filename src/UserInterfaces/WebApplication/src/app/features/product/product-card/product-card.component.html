@@ -1,1 +1,53 @@
-<p>product-card works!</p>
+<mat-card class="product-card" [class.hover]="true">
+  <mat-card-header>
+    <div class="product-image-container" (click)="viewDetails()">
+      <img
+        alt="Product Image"
+        mat-card-image
+        [src]="(product.imageUrl ?? getImageUrl(product.imageFile)) || ''"
+        [alt]="product.name"
+        class="product-image"
+        (error)="onImageError($event)"
+      />
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="product-info">
+      <h3 class="product-title">{{ product.name }}</h3>
+      <p class="product-description">{{ product.description }}</p>
+
+      <div class="product-categories">
+        <mat-chip-set>
+          <mat-chip
+            *ngFor="let category of product.category"
+            class="category-chip"
+          >
+            {{ category }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <div class="product-price">
+        <span class="price-label">Price:</span>
+        <span class="price-value">${{ product.price | number : "1.2-2" }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" class="add-to-cart-btn">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Add to Cart
+    </button>
+    <button
+      mat-stroked-button
+      color="accent"
+      class="view-details-btn"
+      [routerLink]="['/products', product.id]"
+    >
+      <mat-icon>visibility</mat-icon>
+      View Details
+    </button>
+  </mat-card-actions>
+</mat-card>

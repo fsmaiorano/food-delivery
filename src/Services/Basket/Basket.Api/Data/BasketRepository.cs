@@ -1,6 +1,3 @@
-using Basket.Api.Exceptions;
-using Basket.Api.Models;
-
 namespace Basket.Api.Data;
 
 public class BasketRepository(IDocumentSession session) : IBasketRepository

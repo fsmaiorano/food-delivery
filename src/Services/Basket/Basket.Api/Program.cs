@@ -1,13 +1,3 @@
-using Basket.Api.Basket.CheckoutBasket;
-using Basket.Api.Basket.DeleteBasket;
-using Basket.Api.Basket.GetBasket;
-using Basket.Api.Basket.StoreBasket;
-using Basket.Api.Data;
-using Basket.Api.Models;
-using BuildingBlocks.Messaging;
-using Discount.Grpc;
-using Microsoft.Extensions.Caching.Distributed;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;

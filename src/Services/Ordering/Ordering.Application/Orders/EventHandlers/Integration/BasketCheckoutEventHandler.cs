@@ -20,6 +20,7 @@ public class BasketCheckoutEventHandler(IMediator sender, ILogger<BasketCheckout
 
         var orderId = Guid.NewGuid();
 
+        // TODO - Remove thism mock
         var orderDto = new OrderDto(
             Id: orderId,
             CustomerId: message.CustomerId,

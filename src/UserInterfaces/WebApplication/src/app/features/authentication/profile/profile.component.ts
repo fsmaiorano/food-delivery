@@ -18,7 +18,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
 
-import { AuthService, AuthUser } from '../../../shared/services/auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import {
+  AuthStoreService,
+  AuthUser,
+} from '../../../shared/services/auth-store.service';
 import { ProfileService } from '../../../shared/services/profile.service';
 import { Observable } from 'rxjs';
 
@@ -66,11 +70,12 @@ export class ProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private authStore: AuthStoreService,
     private profileService: ProfileService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
-    this.currentUser$ = this.authService.currentUser$;
+    this.currentUser$ = this.authStore.user$;
 
     this.profileForm = this.fb.group({
       firstName: ['', [Validators.required]],

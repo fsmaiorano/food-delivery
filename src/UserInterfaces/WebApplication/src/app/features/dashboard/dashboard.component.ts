@@ -2,7 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { ProductService } from '../../shared/services/product.service';
-import { AuthService, AuthUser } from '../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
+import {
+  AuthStoreService,
+  AuthUser,
+} from '../../shared/services/auth-store.service';
 import { Product, ProductResponse } from '../../shared/models/product.model';
 import { Subject, takeUntil, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
@@ -41,10 +45,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private authService: AuthService,
+    private authStore: AuthStoreService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {
-    this.currentUser$ = this.authService.currentUser$;
+    this.currentUser$ = this.authStore.user$;
   }
 
   ngOnInit(): void {

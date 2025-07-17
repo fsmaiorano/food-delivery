@@ -54,11 +54,14 @@
               mat-raised-button
               color="primary"
               type="submit"
-              [disabled]="!signInForm.valid || isLoading"
+              [disabled]="!signInForm.valid || (isLoading$ | async)"
               class="full-width"
             >
-              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
-              {{ isLoading ? "Signing in..." : "Sign In" }}
+              <mat-spinner
+                *ngIf="isLoading$ | async"
+                diameter="20"
+              ></mat-spinner>
+              {{ (isLoading$ | async) ? "Signing in..." : "Sign In" }}
             </button>
           </div>
         </form>
@@ -173,11 +176,14 @@
               mat-raised-button
               color="primary"
               type="submit"
-              [disabled]="!signUpForm.valid || isLoading"
+              [disabled]="!signUpForm.valid || (isLoading$ | async)"
               class="full-width"
             >
-              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
-              {{ isLoading ? "Creating account..." : "Sign Up" }}
+              <mat-spinner
+                *ngIf="isLoading$ | async"
+                diameter="20"
+              ></mat-spinner>
+              {{ (isLoading$ | async) ? "Creating account..." : "Sign Up" }}
             </button>
           </div>
         </form>

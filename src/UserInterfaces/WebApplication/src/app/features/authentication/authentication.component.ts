@@ -21,6 +21,8 @@ import {
   SignInRequest,
   SignUpRequest,
 } from '../../shared/services/auth.service';
+import { AuthStoreService } from '../../shared/services/auth-store.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authentication',
@@ -42,14 +44,16 @@ export class AuthenticationComponent implements OnInit {
   signInForm: FormGroup;
   signUpForm: FormGroup;
   isSignUpMode = false;
-  isLoading = false;
   errorMessage = '';
+  isLoading$: Observable<boolean>;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private authStore: AuthStoreService,
     private router: Router
   ) {
+    this.isLoading$ = this.authStore.isLoading$;
     this.signInForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -69,7 +73,7 @@ export class AuthenticationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
+    if (this.authStore.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
     }
   }
@@ -82,7 +86,6 @@ export class AuthenticationComponent implements OnInit {
 
   onSignIn(): void {
     if (this.signInForm.valid) {
-      this.isLoading = true;
       this.errorMessage = '';
 
       const credentials: SignInRequest = {
@@ -92,11 +95,9 @@ export class AuthenticationComponent implements OnInit {
 
       this.authService.signIn(credentials).subscribe({
         next: (response) => {
-          this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
-          this.isLoading = false;
           this.errorMessage = this.getErrorMessage(error);
         },
       });
@@ -105,7 +106,6 @@ export class AuthenticationComponent implements OnInit {
 
   onSignUp(): void {
     if (this.signUpForm.valid) {
-      this.isLoading = true;
       this.errorMessage = '';
 
       const userData: SignUpRequest = {
@@ -118,11 +118,9 @@ export class AuthenticationComponent implements OnInit {
 
       this.authService.signUp(userData).subscribe({
         next: (response) => {
-          this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
-          this.isLoading = false;
           if (error.status === 401) {
             this.errorMessage = 'Account created successfully. Please sign in.';
             this.isSignUpMode = false;

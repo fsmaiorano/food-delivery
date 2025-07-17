@@ -1,17 +1,10 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { tap, map, switchMap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { SignUpService } from './signup.service';
-
-export interface AuthUser {
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  roles: string[];
-}
+import { AuthStoreService, AuthUser, AuthTokens } from './auth-store.service';
 
 export interface AuthResponse {
   access_token: string;
@@ -42,22 +35,40 @@ export class AuthService {
   private readonly realm = 'myrealm';
   private readonly clientId = 'frontend-app';
 
-  private currentUserSubject = new BehaviorSubject<AuthUser | null>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
-
-  private tokenSubject = new BehaviorSubject<string | null>(null);
-  public token$ = this.tokenSubject.asObservable();
-
   constructor(
     private http: HttpClient,
     private signUpService: SignUpService,
+    private authStore: AuthStoreService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.loadTokenFromStorage();
+  ) {}
+
+  get currentUser$() {
+    return this.authStore.user$;
+  }
+
+  get token$() {
+    return this.authStore.tokens$.pipe(
+      map((tokens) => tokens?.accessToken || null)
+    );
+  }
+
+  get isAuthenticated$() {
+    return this.authStore.isAuthenticated$;
+  }
+
+  get isLoading$() {
+    return this.authStore.isLoading$;
+  }
+
+  get error$() {
+    return this.authStore.error$;
   }
 
   signIn(credentials: SignInRequest): Observable<AuthResponse> {
     const tokenUrl = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
+
+    this.authStore.setLoading(true);
+    this.authStore.clearError();
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -81,10 +92,34 @@ export class AuthService {
     return this.http
       .post<AuthResponse>(tokenUrl, body.toString(), { headers })
       .pipe(
-        tap((response) => {
+        switchMap((response) => {
           console.log('Authentication successful:', response);
-          this.setToken(response.access_token);
-          this.loadUserInfo();
+          const tokens: AuthTokens = {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+            tokenType: response.token_type,
+            expiresIn: response.expires_in,
+            scope: response.scope,
+          };
+
+          this.authStore.setTokens(tokens);
+
+          return this.loadUserInfoAsync().pipe(
+            map(() => response),
+            catchError((error: any) => {
+              console.error('Error loading user info:', error);
+              this.authStore.clearAll();
+              return throwError(() => error);
+            })
+          );
+        }),
+        tap(() => {
+          this.authStore.setLoading(false);
+        }),
+        catchError((error: any) => {
+          this.authStore.setLoading(false);
+          this.authStore.setError(this.getErrorMessage(error));
+          return throwError(() => error);
         })
       );
   }
@@ -92,7 +127,6 @@ export class AuthService {
   signUp(userData: SignUpRequest): Observable<any> {
     return this.signUpService.registerUser(userData).pipe(
       switchMap((response) => {
-        // After successful registration, attempt to sign in
         return this.signIn({
           username: userData.username,
           password: userData.password,
@@ -102,84 +136,120 @@ export class AuthService {
   }
 
   signOut(): void {
-    this.clearToken();
-    this.currentUserSubject.next(null);
+    this.authStore.clearAll();
+  }
+
+  private loadUserInfoAsync(): Observable<AuthUser> {
+    const token = this.authStore.getAccessToken();
+    if (!token) {
+      return throwError(() => new Error('No access token available'));
+    }
+
+    const userInfoUrl = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/userinfo`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    console.log('Attempting to load user info from:', userInfoUrl);
+    console.log('Token (first 50 chars):', token.substring(0, 50) + '...');
+
+    return this.http.get<any>(userInfoUrl, { headers }).pipe(
+      map((userInfo) => {
+        console.log('User info loaded successfully:', userInfo);
+        const user: AuthUser = {
+          username: userInfo.preferred_username,
+          email: userInfo.email,
+          firstName: userInfo.given_name,
+          lastName: userInfo.family_name,
+          roles: userInfo.realm_access?.roles || [],
+        };
+        this.authStore.setUser(user);
+        return user;
+      })
+    );
   }
 
   private loadUserInfo(): void {
-    const token = this.getToken();
-    if (token) {
-      const userInfoUrl = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/userinfo`;
-
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      });
-
-      console.log('Attempting to load user info from:', userInfoUrl);
-      console.log('Token (first 50 chars):', token.substring(0, 50) + '...');
-
-      this.http.get<any>(userInfoUrl, { headers }).subscribe({
-        next: (userInfo) => {
-          console.log('User info loaded successfully:', userInfo);
-          const user: AuthUser = {
-            username: userInfo.preferred_username,
-            email: userInfo.email,
-            firstName: userInfo.given_name,
-            lastName: userInfo.family_name,
-            roles: userInfo.realm_access?.roles || [],
-          };
-          this.currentUserSubject.next(user);
-        },
-        error: (error) => {
-          console.error('Error loading user info:', error);
-          console.error('Error status:', error.status);
-          console.error('Error details:', error.error);
-          this.clearToken();
-        },
-      });
-    }
-  }
-
-  private setToken(token: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('access_token', token);
-    }
-    this.tokenSubject.next(token);
-  }
-
-  private getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('access_token');
-    }
-    return null;
-  }
-
-  private clearToken(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('access_token');
-    }
-    this.tokenSubject.next(null);
-  }
-
-  private loadTokenFromStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const token = this.getToken();
-      if (token) {
-        this.tokenSubject.next(token);
-        this.loadUserInfo();
-      }
-    }
+    this.loadUserInfoAsync().subscribe({
+      next: (user) => {
+        console.log('User info loaded:', user);
+      },
+      error: (error) => {
+        console.error('Error loading user info:', error);
+        this.authStore.clearAll();
+      },
+    });
   }
 
   isAuthenticated(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      return !!this.getToken();
-    }
-    return false;
+    return this.authStore.isAuthenticated();
   }
 
   hasRole(role: string): boolean {
-    const user = this.currentUserSubject.value;
-    return user?.roles.includes(role) || false;
+    return this.authStore.hasRole(role);
+  }
+
+  getAccessToken(): string | null {
+    return this.authStore.getAccessToken();
+  }
+
+  getCurrentUser(): AuthUser | null {
+    return this.authStore.getUser();
+  }
+
+  refreshToken(): Observable<AuthResponse> {
+    const refreshToken = this.authStore.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('No refresh token available');
+    }
+
+    const tokenUrl = `${this.keycloakUrl}/realms/${this.realm}/protocol/openid-connect/token`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+
+    const body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: this.clientId,
+    });
+
+    return this.http
+      .post<AuthResponse>(tokenUrl, body.toString(), { headers })
+      .pipe(
+        tap((response) => {
+          const tokens: AuthTokens = {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+            tokenType: response.token_type,
+            expiresIn: response.expires_in,
+            scope: response.scope,
+          };
+          this.authStore.setTokens(tokens);
+        })
+      );
+  }
+
+  private getErrorMessage(error: any): string {
+    console.error('Authentication error:', error);
+
+    if (error.error?.error_description) {
+      return error.error.error_description;
+    }
+    if (error.error?.message) {
+      return error.error.message;
+    }
+    if (error.status === 401) {
+      return 'Invalid username or password';
+    }
+    if (error.status === 403) {
+      return 'Access forbidden. Please check your credentials and try again.';
+    }
+    if (error.status === 0) {
+      return 'Unable to connect to authentication server. Please check if Keycloak is running.';
+    }
+    return `An error occurred (${error.status}): ${
+      error.statusText || 'Please try again.'
+    }`;
   }
 }

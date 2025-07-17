@@ -13,6 +13,9 @@
       <span class="user-name"
         >Welcome, {{ user.firstName }} {{ user.lastName }}</span
       >
+      <button mat-icon-button (click)="goToProfile()" matTooltip="Profile">
+        <mat-icon>person</mat-icon>
+      </button>
       <button mat-icon-button (click)="onLogout()" matTooltip="Logout">
         <mat-icon>logout</mat-icon>
       </button>

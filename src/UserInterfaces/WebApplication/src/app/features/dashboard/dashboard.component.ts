@@ -139,4 +139,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.authService.signOut();
     this.router.navigate(['/auth']);
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
 }

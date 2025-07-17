@@ -13,6 +13,18 @@
       <span class="user-name"
         >Welcome, {{ user.firstName }} {{ user.lastName }}</span
       >
+      <button
+        mat-icon-button
+        (click)="goToCart()"
+        matTooltip="Shopping Cart"
+        class="cart-button"
+      >
+        <mat-icon
+          matBadge="{{ (cartItemCount$ | async) || 0 }}"
+          [matBadgeHidden]="(cartItemCount$ | async) === 0"
+          >shopping_cart</mat-icon
+        >
+      </button>
       <button mat-icon-button (click)="goToProfile()" matTooltip="Profile">
         <mat-icon>person</mat-icon>
       </button>

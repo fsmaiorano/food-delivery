@@ -4,7 +4,7 @@ namespace Basket.Api.Basket.StoreBasket;
 
 public record StoreBasketRequest(ShoppingCart Cart);
 
-public record StoreBasketResponse(string Username);
+public record StoreBasketResponse(ShoppingCart Cart);
 
 public class StoreBasketEndpoint
 {
@@ -14,8 +14,8 @@ public class StoreBasketEndpoint
             {
                 var command = new StoreBasketCommand(request.Cart);
                 var result = await sender.Send(command);
-                var response = new StoreBasketResponse(result.Username);
-                return Results.Created($"/basket/{response.Username}", response);
+                var response = new StoreBasketResponse(result.Cart);
+                return Results.Created($"/basket/{response.Cart.Username}", response);
             })
             .WithName("StoreBasket")
             .Produces<StoreBasketResponse>(StatusCodes.Status201Created)

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { ProductService } from '../../shared/services/product.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { BasketService } from '../../shared/services/basket.service';
 import {
   AuthStoreService,
   AuthUser,
@@ -36,6 +37,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
   currentUser$: Observable<AuthUser | null>;
+  cartItemCount$: Observable<number>;
 
   pageIndex = 0;
   pageSize = 100;
@@ -46,10 +48,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private authService: AuthService,
     private authStore: AuthStoreService,
+    private basketService: BasketService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {
     this.currentUser$ = this.authStore.user$;
+    this.cartItemCount$ = this.basketService.getItemCount();
   }
 
   ngOnInit(): void {
@@ -147,5 +151,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   goToProfile(): void {
     this.router.navigate(['/profile']);
+  }
+
+  goToCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

@@ -1,0 +1,137 @@
+<div class="cart-container">
+  <!-- Header -->
+  <mat-toolbar class="cart-header" color="primary">
+    <button mat-icon-button (click)="goBack()" matTooltip="Back to Dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="title">
+      <mat-icon>shopping_cart</mat-icon>
+      Shopping Cart
+    </span>
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading$ | async">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Loading cart...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error$ | async as error">
+    <mat-icon color="warn">error</mat-icon>
+    <p class="error-text">{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Go Back
+    </button>
+  </div>
+
+  <!-- Cart Content -->
+  <div class="cart-content" *ngIf="!(loading$ | async) && !(error$ | async)">
+    <ng-container *ngIf="basket$ | async as basket; else emptyCart">
+      <div class="cart-items">
+        <mat-card class="item-card" *ngFor="let item of basket.items">
+          <mat-card-content>
+            <div class="item-info">
+              <div class="item-details">
+                <h3 class="item-name">{{ item.productName }}</h3>
+                <p class="item-price">${{ item.price | number : "1.2-2" }}</p>
+                <p class="item-color" *ngIf="item.color !== 'default'">
+                  Color: {{ item.color }}
+                </p>
+              </div>
+
+              <div class="quantity-controls">
+                <button
+                  mat-icon-button
+                  (click)="
+                    decreaseQuantity(item.productId, item.quantity, item.color)
+                  "
+                  [disabled]="loading$ | async"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button
+                  mat-icon-button
+                  (click)="
+                    increaseQuantity(item.productId, item.quantity, item.color)
+                  "
+                  [disabled]="loading$ | async"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+
+              <div class="item-total">
+                <p class="total-price">
+                  Total: ${{ item.price * item.quantity | number : "1.2-2" }}
+                </p>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="removeItem(item.productId, item.color)"
+                  [disabled]="loading$ | async"
+                  matTooltip="Remove item"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Cart Summary -->
+      <mat-card class="cart-summary">
+        <mat-card-header>
+          <mat-card-title>Order Summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="summary-line">
+            <span>Items ({{ basket.items.length }})</span>
+            <span>${{ (totalPrice$ | async) || 0 | number : "1.2-2" }}</span>
+          </div>
+          <div class="summary-line total">
+            <span><strong>Total</strong></span>
+            <span
+              ><strong
+                >${{ (totalPrice$ | async) || 0 | number : "1.2-2" }}</strong
+              ></span
+            >
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="clearCart()"
+            [disabled]="loading$ | async"
+          >
+            Clear Cart
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="checkout()"
+            [disabled]="loading$ | async"
+          >
+            Proceed to Checkout
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </ng-container>
+
+    <!-- Empty Cart State -->
+    <ng-template #emptyCart>
+      <div class="empty-cart">
+        <mat-icon class="empty-icon">shopping_cart</mat-icon>
+        <h2>Your cart is empty</h2>
+        <p>Add some products to get started!</p>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Continue Shopping
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

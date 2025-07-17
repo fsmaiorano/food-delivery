@@ -4,6 +4,9 @@ import { Router, RouterModule } from '@angular/router';
 import { Product } from '../../../shared/models/product.model';
 import { MaterialModule } from '../../../shared/material.module';
 import { BasketService } from '../../../shared/services/basket.service';
+import { AuthStoreService } from '../../../shared/services/auth-store.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-product-card',
   imports: [CommonModule, MaterialModule, RouterModule],
@@ -13,7 +16,12 @@ import { BasketService } from '../../../shared/services/basket.service';
 export class ProductCardComponent {
   @Input() product!: Product;
 
-  constructor(private router: Router, private basketService: BasketService) {}
+  constructor(
+    private router: Router,
+    private basketService: BasketService,
+    private authStore: AuthStoreService,
+    private snackBar: MatSnackBar
+  ) {}
 
   viewDetails(): void {
     this.router.navigate(['/products', this.product.id]);
@@ -21,5 +29,39 @@ export class ProductCardComponent {
 
   addToCart(product: Product): void {
     console.log('Adding to cart:', product);
+
+    if (!this.authStore.isAuthenticated()) {
+      this.router.navigate(['/auth'], {
+        queryParams: { returnUrl: this.router.url },
+      });
+      return;
+    }
+
+    this.basketService
+      .addToBasket(
+        product.id,
+        product.name,
+        product.price,
+        1, // quantity
+        'default' // color
+      )
+      .subscribe({
+        next: (basket) => {
+          console.log('Item added to basket:', basket);
+          this.snackBar.open('Item added to cart!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          });
+        },
+        error: (error) => {
+          console.error('Error adding item to basket:', error);
+          this.snackBar.open('Failed to add item to cart', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          });
+        },
+      });
   }
 }

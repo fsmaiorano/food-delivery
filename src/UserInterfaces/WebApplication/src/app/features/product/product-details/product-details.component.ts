@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../shared/material.module';
 import { ProductService } from '../../../shared/services/product.service';
+import { BasketService } from '../../../shared/services/basket.service';
+import { AuthStoreService } from '../../../shared/services/auth-store.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../../shared/models/product.model';
@@ -23,6 +25,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
+    private basketService: BasketService,
+    private authStore: AuthStoreService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
@@ -96,14 +100,43 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToCart(): void {
-    // Implement add to cart functionality
-    if (this.product) {
-      this.snackBar.open(`${this.product.name} added to cart`, 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
+    if (!this.product) return;
+
+    // Check if user is authenticated
+    if (!this.authStore.isAuthenticated()) {
+      this.router.navigate(['/auth'], {
+        queryParams: { returnUrl: this.router.url },
       });
+      return;
     }
+
+    // Add to basket
+    this.basketService
+      .addToBasket(
+        this.product.id,
+        this.product.name,
+        this.product.price,
+        1, // quantity
+        'default' // color
+      )
+      .subscribe({
+        next: (basket) => {
+          console.log('Item added to basket:', basket);
+          this.snackBar.open(`${this.product!.name} added to cart!`, 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          });
+        },
+        error: (error) => {
+          console.error('Error adding item to basket:', error);
+          this.snackBar.open('Failed to add item to cart', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          });
+        },
+      });
   }
 
   getCategoryDisplay(): string {

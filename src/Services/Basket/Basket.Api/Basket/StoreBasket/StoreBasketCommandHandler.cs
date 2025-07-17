@@ -6,7 +6,7 @@ namespace Basket.Api.Basket.StoreBasket;
 
 public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
 
-public record StoreBasketResult(string Username);
+public record StoreBasketResult(ShoppingCart Cart);
 
 public class StoreBasketCommandHandler(
     IBasketRepository repository,
@@ -18,7 +18,7 @@ public class StoreBasketCommandHandler(
     {
         await DeductDiscounts(command.Cart, cancellationToken);
         await repository.StoreBasket(command.Cart, cancellationToken);
-        return new StoreBasketResult(command.Cart.Username);
+        return new StoreBasketResult(command.Cart);
     }
 
     private async Task DeductDiscounts(ShoppingCart cart, CancellationToken cancellationToken)

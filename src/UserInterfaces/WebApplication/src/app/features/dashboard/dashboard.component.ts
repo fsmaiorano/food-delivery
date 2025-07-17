@@ -2,10 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { ProductService } from '../../shared/services/product.service';
+import { AuthService, AuthUser } from '../../shared/services/auth.service';
 import { Product, ProductResponse } from '../../shared/models/product.model';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { FilterComponent } from './filter/filter.component';
 import { ProductCardComponent } from '../product/product-card/product-card.component';
 
@@ -29,6 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedCategory: string = '';
   loading = false;
   error: string | null = null;
+  currentUser$: Observable<AuthUser | null>;
 
   pageIndex = 0;
   pageSize = 100;
@@ -37,8 +40,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private snackBar: MatSnackBar
-  ) {}
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+    this.currentUser$ = this.authService.currentUser$;
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -126,5 +133,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   trackByProductId(index: number, product: Product): string {
     return product.id;
+  }
+
+  onLogout(): void {
+    this.authService.signOut();
+    this.router.navigate(['/auth']);
   }
 }

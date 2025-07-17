@@ -1,0 +1,196 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{ isSignUpMode ? "Sign Up" : "Sign In" }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ isSignUpMode ? "Create a new account" : "Welcome back!" }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Sign In Form -->
+        <form
+          *ngIf="!isSignUpMode"
+          [formGroup]="signInForm"
+          (ngSubmit)="onSignIn()"
+        >
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              formControlName="username"
+              placeholder="Enter your username"
+            />
+            <mat-error *ngIf="signInControls['username'].hasError('required')">
+              Username is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+            />
+            <mat-error *ngIf="signInControls['password'].hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="signInControls['password'].hasError('minlength')">
+              Password must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+
+          <div class="error-message" *ngIf="errorMessage">
+            <mat-error>{{ errorMessage }}</mat-error>
+          </div>
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!signInForm.valid || isLoading"
+              class="full-width"
+            >
+              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+              {{ isLoading ? "Signing in..." : "Sign In" }}
+            </button>
+          </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form
+          *ngIf="isSignUpMode"
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSignUp()"
+        >
+          <div class="form-row">
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                placeholder="Enter your first name"
+              />
+              <mat-error
+                *ngIf="signUpControls['firstName'].hasError('required')"
+              >
+                First name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="half-width">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                placeholder="Enter your last name"
+              />
+              <mat-error
+                *ngIf="signUpControls['lastName'].hasError('required')"
+              >
+                Last name is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              formControlName="username"
+              placeholder="Choose a username"
+            />
+            <mat-error *ngIf="signUpControls['username'].hasError('required')">
+              Username is required
+            </mat-error>
+            <mat-error *ngIf="signUpControls['username'].hasError('minlength')">
+              Username must be at least 3 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              placeholder="Enter your email"
+            />
+            <mat-error *ngIf="signUpControls['email'].hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="signUpControls['email'].hasError('email')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              placeholder="Choose a password"
+            />
+            <mat-error *ngIf="signUpControls['password'].hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="signUpControls['password'].hasError('minlength')">
+              Password must be at least 6 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Confirm Password</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+            />
+            <mat-error
+              *ngIf="signUpControls['confirmPassword'].hasError('required')"
+            >
+              Please confirm your password
+            </mat-error>
+            <mat-error *ngIf="signUpForm.hasError('passwordMismatch')">
+              Passwords do not match
+            </mat-error>
+          </mat-form-field>
+
+          <div class="error-message" *ngIf="errorMessage">
+            <mat-error>{{ errorMessage }}</mat-error>
+          </div>
+
+          <div class="form-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!signUpForm.valid || isLoading"
+              class="full-width"
+            >
+              <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+              {{ isLoading ? "Creating account..." : "Sign Up" }}
+            </button>
+          </div>
+        </form>
+
+        <div class="toggle-mode">
+          <span>{{
+            isSignUpMode ? "Already have an account?" : "Don't have an account?"
+          }}</span>
+          <button mat-button color="primary" (click)="toggleMode()">
+            {{ isSignUpMode ? "Sign In" : "Sign Up" }}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -19,6 +19,26 @@
     font-weight: 500;
   }
 
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 20px;
+
+    .user-name {
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    button {
+      color: rgba(255, 255, 255, 0.9);
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+
   .filter {
     display: flex;
     align-items: center;

@@ -7,6 +7,17 @@
     </span>
 
     <span class="spacer"></span>
+
+    <!-- User info and logout -->
+    <div class="user-section" *ngIf="currentUser$ | async as user">
+      <span class="user-name"
+        >Welcome, {{ user.firstName }} {{ user.lastName }}</span
+      >
+      <button mat-icon-button (click)="onLogout()" matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+
     <app-filter
       class="filter"
       [categories]="categories"

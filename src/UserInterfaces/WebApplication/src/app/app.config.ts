@@ -12,6 +12,7 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
+import { authInterceptor } from './shared/interceptors/auth-functional.interceptor';
 
 // Create a custom HTTP interceptor function to handle self-signed certificates
 const acceptSelfSignedCertificateInterceptor = (req: any, next: any) => {
@@ -30,7 +31,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([acceptSelfSignedCertificateInterceptor])
+      withInterceptors([
+        acceptSelfSignedCertificateInterceptor,
+        authInterceptor,
+      ])
     ),
     provideAnimationsAsync(),
   ],

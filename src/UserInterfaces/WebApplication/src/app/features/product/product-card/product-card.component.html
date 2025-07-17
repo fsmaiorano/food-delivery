@@ -4,10 +4,9 @@
       <img
         alt="Product Image"
         mat-card-image
-        [src]="(product.imageUrl ?? getImageUrl(product.imageFile)) || ''"
+        [src]="product.imageUrl || ''"
         [alt]="product.name"
         class="product-image"
-        (error)="onImageError($event)"
       />
     </div>
   </mat-card-header>
@@ -36,7 +35,12 @@
   </mat-card-content>
 
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" class="add-to-cart-btn">
+    <button
+      mat-raised-button
+      color="primary"
+      class="add-to-cart-btn"
+      (click)="addToCart(product)"
+    >
       <mat-icon>add_shopping_cart</mat-icon>
       Add to Cart
     </button>

@@ -14,29 +14,11 @@ export class ProductCardComponent {
 
   constructor(private router: Router) {}
 
-  getImageUrl(imageFile?: string): string {
-    if (this.product.imageUrl) {
-      return this.product.imageUrl;
-    }
-
-    if (imageFile) {
-      return `https://via.placeholder.com/300x200/e3f2fd/1976d2?text=${encodeURIComponent(
-        this.product.name
-      )}`;
-    }
-
-    return `https://via.placeholder.com/300x200/e3f2fd/1976d2?text=${encodeURIComponent(
-      this.product.name
-    )}`;
-  }
-
-  onImageError(event: any): void {
-    event.target.src = `https://via.placeholder.com/300x200/f5f5f5/999999?text=${encodeURIComponent(
-      this.product.name
-    )}`;
-  }
-
   viewDetails(): void {
     this.router.navigate(['/products', this.product.id]);
+  }
+
+  addToCart(product: Product): void {
+    console.log('Adding to cart:', product);
   }
 }

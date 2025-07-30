@@ -215,3 +215,16 @@ services:
       - "6005:8080"
     volumes:
       - ./myrealm.json:/opt/keycloak/data/import/myrealm.json
+
+  webapp:
+    container_name: webapp
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - gatewayapi
+    restart: always
+    volumes:
+      - ./UserInterfaces/WebApplication/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "4001:80"
+  

@@ -123,7 +123,6 @@ export class ProductService {
         return this.transformApiProduct(response.product);
       }),
       catchError((error) => {
-        debugger;
         this.loadingSubject.next(false);
         throw error;
       })

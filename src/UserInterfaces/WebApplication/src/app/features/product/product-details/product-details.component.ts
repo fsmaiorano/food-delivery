@@ -51,13 +51,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   private loadProductDetails(productId: string): void {
-    debugger;
     this.productService
       .getProductById(productId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (product) => {
-          debugger;
           if (product) {
             this.product = product;
           } else {

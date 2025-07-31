@@ -116,7 +116,6 @@ export class BasketService {
         };
       }),
       switchMap((basketData) => {
-        debugger;
         // Create/update basket
         return this.createBasket({
           Cart: {
@@ -130,7 +129,6 @@ export class BasketService {
         this.loadingSubject.next(false);
       }),
       catchError((error) => {
-        debugger;
         console.error('Error adding to basket:', error);
         this.errorSubject.next('Failed to add item to basket');
         this.loadingSubject.next(false);
@@ -201,7 +199,6 @@ export class BasketService {
 
     return this.http.post<any>(`${this.apiUrl}/basket`, basketData).pipe(
       map((response) => {
-        debugger;
         console.log('Create basket response received:', response);
         this.loadingSubject.next(false);
         const transformedBasket = this.transformApiBasket(response);
@@ -394,7 +391,6 @@ export class BasketService {
   }
 
   private transformApiBasket(apiResponse: any): Basket | null {
-    debugger;
     if (!apiResponse || !apiResponse.cart) {
       return null;
     }

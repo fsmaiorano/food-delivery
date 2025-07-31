@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface UpdateProfileRequest {
   firstName: string;
@@ -17,7 +18,7 @@ export interface ChangePasswordRequest {
   providedIn: 'root',
 })
 export class ProfileService {
-  private readonly keycloakUrl = 'http://localhost:6005';
+  private readonly keycloakUrl = environment.keycloakUrl;
   private readonly realm = 'myrealm';
 
   constructor(private http: HttpClient) {}

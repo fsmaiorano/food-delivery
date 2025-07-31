@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { SignUpRequest } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignUpService {
-  private readonly keycloakUrl = 'http://localhost:6005';
+  private readonly keycloakUrl = environment.keycloakUrl;
   private readonly realm = 'myrealm';
 
   constructor(private http: HttpClient) {}

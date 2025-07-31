@@ -10,12 +10,13 @@ import {
   CreateBasketRequest,
   CheckoutBasketRequest,
 } from '../models/basket.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
-  private readonly apiUrl = 'https://localhost:5051'; // Gateway API URL
+  private readonly apiUrl = environment.basketUrl;
 
   private basketSubject = new BehaviorSubject<Basket | null>(null);
   public basket$ = this.basketSubject.asObservable();

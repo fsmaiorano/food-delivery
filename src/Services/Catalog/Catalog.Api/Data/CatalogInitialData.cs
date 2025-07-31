@@ -14,8 +14,8 @@ public class CatalogInitialData : IInitialData
         {
             foreach (var product in Products)
             {
-                var storedImage = await MinioBucket.SendImageAsync(product.ImageUrl);
-                product.ImageUrl = storedImage.objectName;
+                var (objectName, _) = await MinioBucket.SendImageAsync(product.ImageUrl);
+                product.ImageUrl = objectName;
                 session.Store(product);
             }
 

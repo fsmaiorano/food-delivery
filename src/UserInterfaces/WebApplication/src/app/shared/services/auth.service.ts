@@ -5,6 +5,7 @@ import { tap, map, switchMap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { SignUpService } from './signup.service';
 import { AuthStoreService, AuthUser, AuthTokens } from './auth-store.service';
+import { environment } from '../../../environments/environment';
 
 export interface AuthResponse {
   access_token: string;
@@ -31,8 +32,8 @@ export interface SignInRequest {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly keycloakUrl = 'http://localhost:6005';
-  private readonly realm = 'myrealm';
+  private readonly keycloakUrl = environment.keycloakUrl;
+  private readonly realm = environment.keycloakRealm;
   private readonly clientId = 'frontend-app';
 
   constructor(

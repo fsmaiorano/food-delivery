@@ -15,7 +15,7 @@ RUN npm ci --only=production=false && \
 COPY UserInterfaces/WebApplication/ .
 
 # Build the Angular application for production
-RUN npm run build -- --configuration=production
+RUN npm run build:prod
 
 # List the build output for debugging and handle different build structures
 RUN echo "Build completed. Checking output..." && \
@@ -59,8 +59,8 @@ RUN echo "Files in /usr/share/nginx/html:" && ls -la /usr/share/nginx/html/ && \
     chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html
 
-# Expose port 80 only (HTTP)
-EXPOSE 80
+# Expose ports 80 (main HTTP) and 4041 (redirect HTTP)
+EXPOSE 80 4041
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

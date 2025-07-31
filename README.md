@@ -88,6 +88,67 @@ var downloadUrl = await MinioBucket.GetImageToDownload(imageName);
 await MinioBucket.DeleteImageAsync(imageName);
 ```
 
+## 🌐 Nginx Reverse Proxy
+
+The application uses Nginx as a reverse proxy to serve the Angular frontend and route API requests to the appropriate backend services.
+
+### Configuration
+
+**Docker Setup:**
+The webapp service runs in a Docker container using Nginx to serve the Angular application and proxy API requests:
+
+```yaml
+webapp:
+  image: webapp
+  build:
+    context: .
+    dockerfile: UserInterfaces/WebApplication/Dockerfile
+  container_name: webapp
+  environment:
+    - NODE_ENV=production
+  ports:
+    - "4001:80"
+  volumes:
+    - ./UserInterfaces/WebApplication/nginx.conf:/etc/nginx/conf.d/default.conf
+```
+
+### Features
+
+**Static File Serving:**
+- Serves the compiled Angular application from `/usr/share/nginx/html`
+- Implements Single Page Application (SPA) routing with fallback to `index.html`
+- Optimized caching for static assets (JS, CSS, images) with 1-year expiry
+
+**API Proxying:**
+- **`/api/*`**: Proxies to Gateway API (`gatewayapi:8080`)
+- **`/auth/*`**: Proxies to Keycloak authentication (`keycloak:8080`)
+
+**Security & Performance:**
+- Security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection)
+- Gzip compression for text-based assets
+- Request buffering optimization for better performance
+- Health check endpoint at `/health`
+
+**Error Handling:**
+- Minimized log noise with critical-level error logging only
+- Suppressed SSL handshake failure logs
+- Proper HTTP headers for proxied requests
+
+### Access Points
+
+- **Web Application**: `http://localhost:4001`
+- **API Gateway (via proxy)**: `http://localhost:4001/api/`
+- **Keycloak (via proxy)**: `http://localhost:4001/auth/`
+- **Health Check**: `http://localhost:4001/health`
+
+### Multi-Stage Docker Build
+
+The Dockerfile uses a multi-stage build process:
+
+1. **Build Stage**: Uses Node.js 20 Alpine to compile the Angular application
+2. **Runtime Stage**: Uses Nginx Alpine to serve the compiled application
+3. **Custom Configuration**: Mounts the custom `nginx.conf` for optimized routing and proxying
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -111,6 +172,7 @@ docker-compose up -d
 ```
 
 3. **Access the services**
+   - **Web Application**: `http://localhost:4001`
    - **Gateway API**: `http://localhost:6004`
    - **Catalog API**: `http://localhost:6000`
    - **Basket API**: `http://localhost:6001`
@@ -124,6 +186,7 @@ docker-compose up -d
 
 | Service | HTTP Port | HTTPS Port | Database Port |
 |---------|-----------|------------|---------------|
+| Web Application (Nginx) | 4001 | - | - |
 | Catalog API | 6000 | 6060 | 5432 |
 | Basket API | 6001 | 6061 | 5433 |
 | Discount gRPC | 6002 | 6062 | - |

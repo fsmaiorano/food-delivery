@@ -27,11 +27,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// if (app.Environment.IsDevelopment())
-// {
-//     await app.SeedDataAsync();
-// }
-
 CreateProductEndpoint.MapEndpoints(app);
 UpdateProductEndpoint.MapEndpoints(app);
 DeleteProductEndpoint.MapEndpoints(app);

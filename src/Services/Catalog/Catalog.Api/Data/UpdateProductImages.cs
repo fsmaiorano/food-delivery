@@ -26,8 +26,8 @@ public static class UpdateProductImages
 
                 try
                 {
-                    var storedImage = await MinioBucket.SendImageAsync(originalImageUrl);
-                    product.ImageUrl = storedImage.objectName;
+                    var (objectName, objectUrl) = await MinioBucket.SendImageAsync(originalImageUrl);
+                    product.ImageUrl = objectName;
 
                     Console.WriteLine($"Updated ImageUrl: {product.ImageUrl}");
                 }

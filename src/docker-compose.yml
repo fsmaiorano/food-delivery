@@ -25,6 +25,7 @@ services:
   
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
+    platform: linux/amd64
     depends_on:
       - catalogdb
     build:
@@ -33,6 +34,7 @@ services:
   
   basket.api:
     image: ${DOCKER_REGISTRY-}basketapi
+    platform: linux/amd64
     depends_on:
       - basketdb
     build:
@@ -41,18 +43,21 @@ services:
   
   discount.grpc:
     image: ${DOCKER_REGISTRY-}discountgrpc
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Services/Discount/Discount.Grpc/Dockerfile
   
   ordering.api:
     image: ${DOCKER_REGISTRY-}orderingapi
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
   
   gatewayapi:
     image: ${DOCKER_REGISTRY-}gatewayapi
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Gateways/GatewayApi/Dockerfile

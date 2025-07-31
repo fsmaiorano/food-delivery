@@ -6,7 +6,7 @@ namespace BuildingBlocks.Storage.Minio;
 public sealed record MinioBucket
 {
     private const string BucketName = "food-delivery";
-    
+
     public static async Task<(string objectName, string objectUrl)> SendImageAsync(string imageUrl)
     {
         var minio = await CreateMinioClient();
@@ -18,7 +18,7 @@ public sealed record MinioBucket
         {
             using var httpClient = CreateHttpClient();
             string contentType;
-            
+
             try
             {
                 using var headResponse = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, imageUrl));
@@ -62,13 +62,13 @@ public sealed record MinioBucket
     public static async Task<string?> GetImageAsync(string imageName)
     {
         var minio = await CreateMinioClient();
-        
+
         try
         {
             var presignedUrl = await minio.PresignedGetObjectAsync(new PresignedGetObjectArgs()
                 .WithBucket(BucketName)
                 .WithObject(imageName)
-                .WithExpiry(60 * 60)); // URL válida por 1 hora
+                .WithExpiry(60 * 60)); // URL valid for 1 hour
 
             Console.WriteLine($"URL temporária: {presignedUrl}");
             return presignedUrl;
@@ -104,11 +104,11 @@ public sealed record MinioBucket
             return string.Empty;
         }
     }
-    
+
     public static async Task DeleteImageAsync(string imageName)
     {
         var minio = await CreateMinioClient();
-        
+
 
         try
         {

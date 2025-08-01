@@ -1,10 +1,10 @@
 export const environment = {
   production: false,
-  catalogUrl: 'http://localhost:5004',
-  basketUrl: 'http://localhost:5004',
-  discountUrl: 'http://localhost:5004',
-  orderingUrl: 'http://localhost:5004',
-  yarpUrl: 'http://localhost:5004',
-  keycloakUrl: 'http://localhost:6005/auth',
+  catalogUrl: 'https://localhost:5054/catalog-service',
+  basketUrl: 'https://localhost:5054/basket-service',
+  discountUrl: 'https://localhost:5054/discount-service',
+  orderingUrl: 'https://localhost:5054/ordering-service',
+  yarpUrl: 'https://localhost:5054',
+  keycloakUrl: 'http://localhost:6005',
   keycloakRealm: 'myrealm',
 };

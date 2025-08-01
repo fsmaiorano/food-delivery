@@ -5,6 +5,6 @@ export const environment = {
   discountUrl: 'https://localhost:6064/discount-service',
   orderingUrl: 'https://localhost:6064/ordering-service',
   yarpUrl: 'https://localhost:6064',
-  keycloakUrl: 'http://localhost:6005/auth',
+  keycloakUrl: 'http://localhost:6005',
   keycloakRealm: 'myrealm',
 };

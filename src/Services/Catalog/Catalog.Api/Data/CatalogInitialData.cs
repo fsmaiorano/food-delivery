@@ -8,19 +8,15 @@ public class CatalogInitialData : IInitialData
     {
         await using var session = store.LightweightSession();
 
-        var existingProductsCount = await session.Query<Product>().CountAsync(cancellation);
-
-        if (existingProductsCount == 0)
+        //TODO - Remove mock data 
+        foreach (var product in Products)
         {
-            foreach (var product in Products)
-            {
-                var (objectName, _) = await MinioBucket.SendImageAsync(product.ImageUrl);
-                product.ImageUrl = objectName;
-                session.Store(product);
-            }
-
-            await session.SaveChangesAsync(cancellation);
+            var (objectName, _) = await MinioBucket.SendImageAsync(product.ImageUrl);
+            product.ImageUrl = objectName;
+            session.Store(product);
         }
+
+        await session.SaveChangesAsync(cancellation);
     }
 
     private static IEnumerable<Product> Products => new List<Product>
@@ -87,7 +83,7 @@ public class CatalogInitialData : IInitialData
             Categories = ["Salad", "Greek", "Healthy", "Vegetarian"],
             Description = "Fresh vegetables with feta cheese, olives, and olive oil dressing",
             ImageUrl =
-                "https://www.simplyrecipes.com/thmb/0NrKQlJ691l6L9tZXpL06uOuWis=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Easy-Greek-Salad-LEAD-2-4601eff771fd4de38f9722e8cafc897a.jpg",
+                "https://bing.com/th?id=OSK.276aa389f9d266aeea9c7aaa5175d053",
             Price = 10.99m
         },
         new()

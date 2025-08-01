@@ -36,7 +36,6 @@ public static class DatabaseExtencions
         }
         catch (Exception ex)
         {
-            // Log the exception but don't crash the application
             Console.WriteLine($"Seeding failed: {ex.Message}");
             throw;
         }

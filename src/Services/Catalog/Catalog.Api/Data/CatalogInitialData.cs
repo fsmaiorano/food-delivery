@@ -23,7 +23,7 @@ public class CatalogInitialData : IInitialData
         }
     }
 
-    public static IEnumerable<Product> Products => new List<Product>
+    private static IEnumerable<Product> Products => new List<Product>
     {
         new()
         {

@@ -1,6 +1,6 @@
 # Food Delivery Microservices Application
 
-A comprehensive food delivery application built using .NET 9 microservices architecture with Clean Architecture principles, CQRS pattern, and Event-Driven Architecture.
+A full-featured food delivery system built with .NET 9 using a microservices architecture, Clean Architecture principles, the CQRS pattern, and Event-Driven Architecture. It includes dedicated services for catalog, basket, ordering, discounts, and authentication, leveraging technologies like PostgreSQL, Redis, RabbitMQ, MinIO, Keycloak, and Angular. 
 
 ## 🏗️ Architecture Overview
 

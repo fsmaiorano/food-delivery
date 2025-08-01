@@ -17,7 +17,7 @@
           [formGroup]="signInForm"
           (ngSubmit)="onSignIn()"
         >
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Username</mat-label>
             <input
               matInput
@@ -29,7 +29,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Password</mat-label>
             <input
               matInput
@@ -57,10 +57,6 @@
               [disabled]="!signInForm.valid || (isLoading$ | async)"
               class="full-width"
             >
-              <mat-spinner
-                *ngIf="isLoading$ | async"
-                diameter="20"
-              ></mat-spinner>
               {{ (isLoading$ | async) ? "Signing in..." : "Sign In" }}
             </button>
           </div>
@@ -73,7 +69,7 @@
           (ngSubmit)="onSignUp()"
         >
           <div class="form-row">
-            <mat-form-field appearance="fill" class="half-width">
+            <mat-form-field appearance="outline" class="half-width">
               <mat-label>First Name</mat-label>
               <input
                 matInput
@@ -87,7 +83,7 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="half-width">
+            <mat-form-field appearance="outline" class="half-width">
               <mat-label>Last Name</mat-label>
               <input
                 matInput
@@ -102,7 +98,7 @@
             </mat-form-field>
           </div>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Username</mat-label>
             <input
               matInput
@@ -117,7 +113,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Email</mat-label>
             <input
               matInput
@@ -133,7 +129,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Password</mat-label>
             <input
               matInput
@@ -149,7 +145,7 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Confirm Password</mat-label>
             <input
               matInput
@@ -179,10 +175,6 @@
               [disabled]="!signUpForm.valid || (isLoading$ | async)"
               class="full-width"
             >
-              <mat-spinner
-                *ngIf="isLoading$ | async"
-                diameter="20"
-              ></mat-spinner>
               {{ (isLoading$ | async) ? "Creating account..." : "Sign Up" }}
             </button>
           </div>

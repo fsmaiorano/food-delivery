@@ -4,54 +4,6 @@
   margin-top: 80px;
 }
 
-.dashboard-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 120px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  .title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.2em;
-    font-weight: 500;
-  }
-
-  .user-section {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-right: 20px;
-
-    .user-name {
-      font-size: 0.9em;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    button {
-      color: rgba(255, 255, 255, 0.9);
-
-      &:hover {
-        color: white;
-      }
-    }
-  }
-
-  .filter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    margin-top: 20px;
-  }
-
-  .spacer {
-    flex: 1 1 auto;
-  }
-}
-
 .results-summary {
   display: flex;
   align-items: center;

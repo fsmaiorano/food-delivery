@@ -50,7 +50,7 @@ services:
   
   ordering.api:
     image: ${DOCKER_REGISTRY-}orderingapi
-    platform: linux/amd64
+    # platform: linux/amd64
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
@@ -73,5 +73,5 @@ volumes:
   postgres_basket:
   postgres_keycloak:
   minio_data:
-  #  sql_order:
+  sql_order:
   

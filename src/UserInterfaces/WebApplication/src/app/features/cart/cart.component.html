@@ -113,10 +113,299 @@
           <button
             mat-raised-button
             color="primary"
-            (click)="checkout()"
+            (click)="showCheckout()"
             [disabled]="loading$ | async"
+            *ngIf="!showCheckoutForm"
           >
             Proceed to Checkout
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Checkout Form -->
+      <mat-card class="checkout-form" *ngIf="showCheckoutForm">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>payment</mat-icon>
+            Checkout Information
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="checkoutForm" (ngSubmit)="checkout()">
+            <mat-horizontal-stepper #stepper>
+              <!-- Personal Information Step -->
+              <mat-step label="Personal Information">
+                <div class="form-section">
+                  <div class="form-row">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>First Name</mat-label>
+                      <input
+                        matInput
+                        formControlName="firstName"
+                        placeholder="Enter your first name"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('firstName')?.touched &&
+                          checkoutForm.get('firstName')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("firstName") }}
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Last Name</mat-label>
+                      <input
+                        matInput
+                        formControlName="lastName"
+                        placeholder="Enter your last name"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('lastName')?.touched &&
+                          checkoutForm.get('lastName')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("lastName") }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field appearance="outline" class="form-field-full">
+                    <mat-label>Email Address</mat-label>
+                    <input
+                      matInput
+                      formControlName="emailAddress"
+                      type="email"
+                      placeholder="Enter your email address"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        checkoutForm.get('emailAddress')?.touched &&
+                        checkoutForm.get('emailAddress')?.errors
+                      "
+                    >
+                      {{ getErrorMessage("emailAddress") }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="step-actions">
+                  <button mat-button matStepperNext type="button">Next</button>
+                </div>
+              </mat-step>
+
+              <!-- Address Information Step -->
+              <mat-step label="Shipping Address">
+                <div class="form-section">
+                  <mat-form-field appearance="outline" class="form-field-full">
+                    <mat-label>Address Line</mat-label>
+                    <input
+                      matInput
+                      formControlName="addressLine"
+                      placeholder="Enter your street address"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        checkoutForm.get('addressLine')?.touched &&
+                        checkoutForm.get('addressLine')?.errors
+                      "
+                    >
+                      {{ getErrorMessage("addressLine") }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <div class="form-row">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Country</mat-label>
+                      <mat-select formControlName="country" required>
+                        <mat-option value="US">United States</mat-option>
+                        <mat-option value="CA">Canada</mat-option>
+                        <mat-option value="UK">United Kingdom</mat-option>
+                        <mat-option value="AU">Australia</mat-option>
+                        <mat-option value="BR">Brazil</mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('country')?.touched &&
+                          checkoutForm.get('country')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("country") }}
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>State/Province</mat-label>
+                      <input
+                        matInput
+                        formControlName="state"
+                        placeholder="Enter state or province"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('state')?.touched &&
+                          checkoutForm.get('state')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("state") }}
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>ZIP Code</mat-label>
+                      <input
+                        matInput
+                        formControlName="zipCode"
+                        placeholder="Enter ZIP code"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('zipCode')?.touched &&
+                          checkoutForm.get('zipCode')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("zipCode") }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="step-actions">
+                  <button mat-button matStepperPrevious type="button">
+                    Back
+                  </button>
+                  <button mat-button matStepperNext type="button">Next</button>
+                </div>
+              </mat-step>
+
+              <!-- Payment Information Step -->
+              <mat-step label="Payment Information">
+                <div class="form-section">
+                  <mat-form-field appearance="outline" class="form-field-full">
+                    <mat-label>Payment Method</mat-label>
+                    <mat-select formControlName="paymentMethod" required>
+                      <mat-option
+                        *ngFor="let method of paymentMethods"
+                        [value]="method.value"
+                      >
+                        {{ method.label }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="form-field-full">
+                    <mat-label>Cardholder Name</mat-label>
+                    <input
+                      matInput
+                      formControlName="cardName"
+                      placeholder="Enter name on card"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        checkoutForm.get('cardName')?.touched &&
+                        checkoutForm.get('cardName')?.errors
+                      "
+                    >
+                      {{ getErrorMessage("cardName") }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="form-field-full">
+                    <mat-label>Card Number</mat-label>
+                    <input
+                      matInput
+                      formControlName="cardNumber"
+                      (input)="formatCardNumber($event)"
+                      placeholder="1234 5678 9012 3456"
+                      maxlength="19"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        checkoutForm.get('cardNumber')?.touched &&
+                        checkoutForm.get('cardNumber')?.errors
+                      "
+                    >
+                      {{ getErrorMessage("cardNumber") }}
+                    </mat-error>
+                  </mat-form-field>
+
+                  <div class="form-row">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Expiration Date</mat-label>
+                      <input
+                        matInput
+                        formControlName="expiration"
+                        (input)="formatExpiration($event)"
+                        placeholder="MM/YY"
+                        maxlength="5"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('expiration')?.touched &&
+                          checkoutForm.get('expiration')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("expiration") }}
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>CVV</mat-label>
+                      <input
+                        matInput
+                        formControlName="cvv"
+                        type="password"
+                        placeholder="123"
+                        maxlength="4"
+                        required
+                      />
+                      <mat-error
+                        *ngIf="
+                          checkoutForm.get('cvv')?.touched &&
+                          checkoutForm.get('cvv')?.errors
+                        "
+                      >
+                        {{ getErrorMessage("cvv") }}
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="step-actions">
+                  <button mat-button matStepperPrevious type="button">
+                    Back
+                  </button>
+                </div>
+              </mat-step>
+            </mat-horizontal-stepper>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button (click)="hideCheckout()" type="button">
+            Cancel
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="checkout()"
+            [disabled]="!checkoutForm.valid || (loading$ | async)"
+            type="button"
+          >
+            <mat-icon>lock</mat-icon>
+            Complete Order - ${{
+              (totalPrice$ | async) || 0 | number : "1.2-2"
+            }}
           </button>
         </mat-card-actions>
       </mat-card>

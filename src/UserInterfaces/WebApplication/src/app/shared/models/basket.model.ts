@@ -25,7 +25,7 @@ export interface CreateBasketRequest {
 
 export interface BasketCheckoutDto {
   userName: string;
-  CustomerId: string;
+  customerId: string;
   totalPrice: number;
   firstName: string;
   lastName: string;

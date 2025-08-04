@@ -71,11 +71,7 @@ export class AuthenticationComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    if (this.authStore.isAuthenticated()) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
+  ngOnInit(): void {}
 
   toggleMode(): void {
     this.isSignUpMode = !this.isSignUpMode;

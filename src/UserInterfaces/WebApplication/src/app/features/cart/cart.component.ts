@@ -36,13 +36,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Check if user is authenticated
-    if (!this.authStore.isAuthenticated()) {
-      this.router.navigate(['/auth']);
-      return;
-    }
-
-    // Load basket
     this.basketService.loadBasket();
   }
 
@@ -63,7 +56,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.snackBar.open('Quantity updated', 'Close', {
             duration: 2000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
         error: (error) => {
@@ -71,7 +64,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.snackBar.open('Failed to update quantity', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
       });
@@ -94,7 +87,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.snackBar.open('Quantity updated', 'Close', {
             duration: 2000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
         error: (error) => {
@@ -102,7 +95,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.snackBar.open('Failed to update quantity', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
       });
@@ -114,7 +107,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.snackBar.open('Item removed from cart', 'Close', {
           duration: 2000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
+          verticalPosition: 'bottom',
         });
       },
       error: (error) => {
@@ -122,7 +115,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.snackBar.open('Failed to remove item', 'Close', {
           duration: 3000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
+          verticalPosition: 'bottom',
         });
       },
     });
@@ -134,7 +127,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.snackBar.open('Cart cleared', 'Close', {
           duration: 2000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
+          verticalPosition: 'bottom',
         });
       },
       error: (error) => {
@@ -142,7 +135,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.snackBar.open('Failed to clear cart', 'Close', {
           duration: 3000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
+          verticalPosition: 'bottom',
         });
       },
     });
@@ -157,7 +150,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.snackBar.open('Checkout functionality coming soon!', 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
     });
   }
 }

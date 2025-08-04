@@ -95,11 +95,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/auth']);
-      return;
-    }
-
     this.currentUser$.subscribe((user) => {
       if (user) {
         this.profileForm.patchValue({

@@ -30,13 +30,6 @@ export class ProductCardComponent {
   addToCart(product: Product): void {
     console.log('Adding to cart:', product);
 
-    if (!this.authStore.isAuthenticated()) {
-      this.router.navigate(['/auth'], {
-        queryParams: { returnUrl: this.router.url },
-      });
-      return;
-    }
-
     this.basketService
       .addToBasket(
         product.id,
@@ -51,15 +44,18 @@ export class ProductCardComponent {
           this.snackBar.open('Item added to cart!', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
         error: (error) => {
           console.error('Error adding item to basket:', error);
+
+          if (error.contains('1001')) return;
+
           this.snackBar.open('Failed to add item to cart', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
       });

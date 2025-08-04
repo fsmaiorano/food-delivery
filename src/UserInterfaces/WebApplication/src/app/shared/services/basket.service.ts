@@ -32,7 +32,6 @@ export class BasketService {
     private authStore: AuthStoreService,
     private router: Router
   ) {
-    // Load basket when user changes
     this.authStore.user$.subscribe((user) => {
       if (user) {
         this.loadBasket();
@@ -42,7 +41,6 @@ export class BasketService {
     });
   }
 
-  // Check if user is authenticated, redirect if not
   private requireAuthentication(): boolean {
     if (!this.authStore.isAuthenticated()) {
       this.router.navigate(['/auth'], {
@@ -53,7 +51,6 @@ export class BasketService {
     return true;
   }
 
-  // Load current user's basket
   loadBasket(): void {
     const user = this.authStore.getUser();
     if (user) {
@@ -69,7 +66,6 @@ export class BasketService {
     }
   }
 
-  // Add item to basket with authentication check
   addToBasket(
     productId: string,
     productName: string,
@@ -78,9 +74,8 @@ export class BasketService {
     color: string = 'default'
   ): Observable<Basket> {
     if (!this.requireAuthentication()) {
-      return throwError(() => new Error('Authentication required'));
+      return throwError(() => new Error('1001: Authentication required'));
     }
-
     const user = this.authStore.getUser()!;
     const basketItem: BasketItem = {
       productId,
@@ -93,20 +88,16 @@ export class BasketService {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
-    // First, get current basket (will auto-create if doesn't exist)
     return this.getBasketByUsername(user.username).pipe(
       map((currentBasket) => {
-        // Add item to existing items (currentBasket is never null now)
         const existingItems = currentBasket?.items || [];
         const existingItemIndex = existingItems.findIndex(
           (item) => item.productId === productId && item.color === color
         );
 
         if (existingItemIndex > -1) {
-          // Update quantity of existing item
           existingItems[existingItemIndex].quantity += quantity;
         } else {
-          // Add new item
           existingItems.push(basketItem);
         }
 
@@ -116,7 +107,6 @@ export class BasketService {
         };
       }),
       switchMap((basketData) => {
-        // Create/update basket
         return this.createBasket({
           Cart: {
             UserName: basketData.username,
@@ -153,7 +143,6 @@ export class BasketService {
       catchError((error) => {
         console.error('Error fetching basket:', error);
 
-        // If basket doesn't exist (404 or BasketNotFoundException), create an empty basket
         if (
           error.status === 404 ||
           error.error?.message?.includes('BasketNotFoundException')
@@ -163,7 +152,6 @@ export class BasketService {
             username
           );
 
-          // Create empty basket data
           const emptyBasketData: CreateBasketRequest = {
             Cart: {
               UserName: username,
@@ -171,7 +159,6 @@ export class BasketService {
             },
           };
 
-          // Create the empty basket and return it
           return this.createBasket(emptyBasketData).pipe(
             tap(() => {
               this.loadingSubject.next(false);
@@ -184,7 +171,6 @@ export class BasketService {
           );
         }
 
-        // For other errors, just propagate them
         this.loadingSubject.next(false);
         throw error;
       })
@@ -289,7 +275,6 @@ export class BasketService {
     );
   }
 
-  // Remove item from basket
   removeFromBasket(
     productId: string,
     color: string = 'default'
@@ -321,7 +306,6 @@ export class BasketService {
     );
   }
 
-  // Update item quantity in basket
   updateQuantity(
     productId: string,
     quantity: number,
@@ -357,7 +341,6 @@ export class BasketService {
     );
   }
 
-  // Get basket item count
   getItemCount(): Observable<number> {
     return this.basket$.pipe(
       map((basket) => {
@@ -367,7 +350,6 @@ export class BasketService {
     );
   }
 
-  // Get basket total price
   getTotalPrice(): Observable<number> {
     return this.basket$.pipe(
       map((basket) => {
@@ -380,7 +362,6 @@ export class BasketService {
     );
   }
 
-  // Clear basket
   clearBasket(): Observable<any> {
     if (!this.requireAuthentication()) {
       return throwError(() => new Error('Authentication required'));

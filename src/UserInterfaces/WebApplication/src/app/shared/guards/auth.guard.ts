@@ -14,7 +14,6 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(): boolean {
-    // During SSR, allow access (auth will be checked on client)
     if (!isPlatformBrowser(this.platformId)) {
       return true;
     }
@@ -22,7 +21,7 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isAuthenticated()) {
       return true;
     } else {
-      this.router.navigate(['/auth']);
+      // this.router.navigate(['/auth']);
       return false;
     }
   }

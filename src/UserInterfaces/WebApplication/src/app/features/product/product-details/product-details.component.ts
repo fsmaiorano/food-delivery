@@ -89,7 +89,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.snackBar.open(errorMessage, 'Close', {
       duration: 5000,
       horizontalPosition: 'center',
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
     });
   }
 
@@ -100,22 +100,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   addToCart(): void {
     if (!this.product) return;
 
-    // Check if user is authenticated
-    if (!this.authStore.isAuthenticated()) {
-      this.router.navigate(['/auth'], {
-        queryParams: { returnUrl: this.router.url },
-      });
-      return;
-    }
-
-    // Add to basket
     this.basketService
       .addToBasket(
         this.product.id,
         this.product.name,
         this.product.price,
-        1, // quantity
-        'default' // color
+        1,
+        'default'
       )
       .subscribe({
         next: (basket) => {
@@ -123,7 +114,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           this.snackBar.open(`${this.product!.name} added to cart!`, 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
         error: (error) => {
@@ -131,7 +122,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           this.snackBar.open('Failed to add item to cart', 'Close', {
             duration: 3000,
             horizontalPosition: 'right',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         },
       });

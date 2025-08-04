@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.snackBar.open(error, 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
-            verticalPosition: 'top',
+            verticalPosition: 'bottom',
           });
         }
       });

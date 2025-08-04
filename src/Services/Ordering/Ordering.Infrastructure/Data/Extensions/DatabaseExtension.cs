@@ -7,7 +7,6 @@ public static class DatabaseExtencions
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        // Wait for database to be ready with retry logic
         await WaitForDatabaseAsync(context);
 
         var created = await context.Database.EnsureCreatedAsync();

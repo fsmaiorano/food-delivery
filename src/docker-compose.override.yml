@@ -60,11 +60,22 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password123
-    restart: always
+      - MSSQL_MEMORY_LIMIT_MB=2048
+    restart: unless-stopped
     ports:
       - "1433:1433"
     volumes:
        - sql_order:/var/opt/mssql
+    # Memory limits to prevent SQL Server from consuming all system memory
+    mem_limit: 2g
+    mem_reservation: 1g
+    # Health check to detect when SQL Server is responsive
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Password123 -Q 'SELECT 1' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
   
   messagebroker:
     container_name: messagebroker
@@ -156,16 +167,19 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;
+      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=Password123;Encrypt=False;TrustServerCertificate=True;Connection Timeout=60;Command Timeout=120;
       - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
       - FeatureManagement__OrderFullfilment=false
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+    restart: unless-stopped
     depends_on:
-      - orderdb
-      - messagebroker
+      orderdb:
+        condition: service_healthy
+      messagebroker:
+        condition: service_started
     ports:
       - "6003:8080"
       - "6063:8081"

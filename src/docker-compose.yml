@@ -18,8 +18,8 @@ services:
     image: redis:latest
   
   orderdb:
-    image: mcr.microsoft.com/mssql/server:latest
-  
+    image: postgres:latest
+
   messagebroker:
     image: rabbitmq:management
   
@@ -50,7 +50,7 @@ services:
   
   ordering.api:
     image: ${DOCKER_REGISTRY-}orderingapi
-    # platform: linux/amd64
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.Api/Dockerfile
@@ -72,6 +72,6 @@ volumes:
   postgres_catalog:
   postgres_basket:
   postgres_keycloak:
+  postgres_order:
   minio_data:
-  sql_order:
   

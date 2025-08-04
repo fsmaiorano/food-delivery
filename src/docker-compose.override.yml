@@ -55,27 +55,19 @@ services:
     ports:
       - "6379:6379"
   
+
   orderdb:
     container_name: orderdb
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Password123
-      - MSSQL_MEMORY_LIMIT_MB=2048
-    restart: unless-stopped
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=OrderDb
+    restart: always
     ports:
-      - "1433:1433"
+      - "5435:5432"
     volumes:
-       - sql_order:/var/opt/mssql
-    # Memory limits to prevent SQL Server from consuming all system memory
-    mem_limit: 2g
-    mem_reservation: 1g
-    # Health check to detect when SQL Server is responsive
-    healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Password123 -Q 'SELECT 1' || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+      - postgres_order:/var/lib/postgresql/data
+  
   
   messagebroker:
     container_name: messagebroker
@@ -176,8 +168,6 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
     restart: unless-stopped
     depends_on:
-      orderdb:
-        condition: service_healthy
       messagebroker:
         condition: service_started
     ports:

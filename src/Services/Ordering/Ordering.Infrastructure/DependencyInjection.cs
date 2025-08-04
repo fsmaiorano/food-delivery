@@ -13,14 +13,10 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
             options.AddInterceptors(serviceProvider.GetRequiredService<ISaveChangesInterceptor>());
-            options.UseSqlServer(connectionString);
+            options.UseNpgsql(connectionString);
         });
 
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-
-        // services.AddDbContext<ApplicationDbContext>(options =>
-        //     options.UseSqlServer(connectionString,
-        //         sqlOptions => { sqlOptions.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name); }));
 
         return services;
     }

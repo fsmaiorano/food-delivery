@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MaterialModule } from '../../../shared/material.module';
+import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'app-filter',

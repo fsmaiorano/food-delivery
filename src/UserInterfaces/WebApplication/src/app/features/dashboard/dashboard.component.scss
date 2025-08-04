@@ -4,7 +4,6 @@
   margin-top: 80px;
 }
 
-// Header Styles
 .dashboard-header {
   position: sticky;
   top: 0;
@@ -51,34 +50,6 @@
   .spacer {
     flex: 1 1 auto;
   }
-}
-
-// Filters Section
-.filters-section {
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.filters-card {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.filter-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.category-filter {
-  min-width: 200px;
-}
-
-.clear-filter-btn {
-  height: 40px;
 }
 
 .results-summary {

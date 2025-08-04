@@ -4,7 +4,6 @@ import { Router, RouterModule } from '@angular/router';
 import { Product } from '../../../shared/models/product.model';
 import { MaterialModule } from '../../../shared/material.module';
 import { BasketService } from '../../../shared/services/basket.service';
-import { AuthStoreService } from '../../../shared/services/auth-store.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -19,7 +18,6 @@ export class ProductCardComponent {
   constructor(
     private router: Router,
     private basketService: BasketService,
-    private authStore: AuthStoreService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -31,13 +29,7 @@ export class ProductCardComponent {
     console.log('Adding to cart:', product);
 
     this.basketService
-      .addToBasket(
-        product.id,
-        product.name,
-        product.price,
-        1, // quantity
-        'default' // color
-      )
+      .addToBasket(product.id, product.name, product.price, 1, 'default')
       .subscribe({
         next: (basket) => {
           console.log('Item added to basket:', basket);

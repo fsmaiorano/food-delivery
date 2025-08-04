@@ -13,9 +13,8 @@ import { Subject, takeUntil, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { FilterComponent } from './filter/filter.component';
+import { FilterComponent, HeaderComponent } from '../../shared/components';
 import { ProductCardComponent } from '../product/product-card/product-card.component';
-import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-dashboard',

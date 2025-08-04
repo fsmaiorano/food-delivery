@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { MaterialModule } from '../../../shared/material.module';
+import { MaterialModule } from '../../material.module';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../shared/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
-import {
-  AuthStoreService,
-  AuthUser,
-} from '../../../shared/services/auth-store.service';
-import { BasketService } from '../../../shared/services/basket.service';
+import { AuthStoreService, AuthUser } from '../../services/auth-store.service';
+import { BasketService } from '../../services/basket.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

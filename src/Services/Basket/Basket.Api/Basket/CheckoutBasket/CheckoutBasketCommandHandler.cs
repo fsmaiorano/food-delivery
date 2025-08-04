@@ -1,4 +1,3 @@
-using Basket.Api.Data;
 using Basket.Api.Dtos;
 using BuildingBlocks.Messaging.Events;
 using BuildingBlocks.Messaging.Interfaces;

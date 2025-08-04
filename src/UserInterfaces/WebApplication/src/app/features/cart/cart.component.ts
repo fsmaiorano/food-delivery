@@ -2,7 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material.module';
 import { BasketService } from '../../shared/services/basket.service';
-import { AuthStoreService } from '../../shared/services/auth-store.service';
+import {
+  AuthStoreService,
+  AuthUser,
+} from '../../shared/services/auth-store.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil, Observable } from 'rxjs';
 import { Basket } from '../../shared/models/basket.model';
@@ -145,12 +148,16 @@ export class CartComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dashboard']);
   }
 
-  checkout(): void {
-    // Navigate to checkout page (to be implemented)
-    this.snackBar.open('Checkout functionality coming soon!', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
+  async checkout(): Promise<void> {
+    const user: AuthUser = this.authStore.getUser()!;
+    console.log(user);
+    debugger;
+    const basketContent = this.basketService.getBasketByUsername(user.username);
+
+    // this.snackBar.open('Checkout functionality coming soon!', 'Close', {
+    //   duration: 3000,
+    //   horizontalPosition: 'center',
+    //   verticalPosition: 'bottom',
+    // });
   }
 }

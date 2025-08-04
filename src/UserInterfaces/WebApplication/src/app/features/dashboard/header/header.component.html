@@ -1,0 +1,36 @@
+<mat-toolbar class="header" color="primary">
+  <span class="title">
+    <mat-icon>restaurant_menu</mat-icon>
+    Dashboard
+  </span>
+
+  <div class="user-section" *ngIf="currentUser$ | async as user">
+    <button
+      mat-icon-button
+      (click)="goToCart()"
+      matTooltip="Shopping Cart"
+      class="cart-button"
+    >
+      <mat-icon
+        matBadge="{{ (cartItemCount$ | async) || 0 }}"
+        [matBadgeHidden]="(cartItemCount$ | async) === 0"
+        >shopping_cart</mat-icon
+      >
+    </button>
+
+    <span class="user-name" matButton [matMenuTriggerFor]="beforeMenu"
+      >Welcome, {{ user.firstName }} {{ user.lastName }}</span
+    >
+
+    <mat-menu class="user-menu" #beforeMenu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="goToProfile()" class="menu-item">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item (click)="onLogout()" class="menu-item">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

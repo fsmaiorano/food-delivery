@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FilterComponent } from './filter/filter.component';
 import { ProductCardComponent } from '../product/product-card/product-card.component';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ import { ProductCardComponent } from '../product/product-card/product-card.compo
     MaterialModule,
     ProductCardComponent,
     FilterComponent,
+    HeaderComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -142,18 +144,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   trackByProductId(index: number, product: Product): string {
     return product.id;
-  }
-
-  onLogout(): void {
-    this.authService.signOut();
-    this.router.navigate(['/auth']);
-  }
-
-  goToProfile(): void {
-    this.router.navigate(['/profile']);
-  }
-
-  goToCart(): void {
-    this.router.navigate(['/cart']);
   }
 }

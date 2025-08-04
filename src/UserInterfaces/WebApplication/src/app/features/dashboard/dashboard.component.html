@@ -1,58 +1,23 @@
 <div class="dashboard-container">
-  <!-- Header Section -->
-  <mat-toolbar class="dashboard-header" color="primary">
-    <span class="title">
-      <mat-icon>restaurant_menu</mat-icon>
-      Dashboard
-    </span>
-
-    <span class="spacer"></span>
-
-    <!-- User info and logout -->
-    <div class="user-section" *ngIf="currentUser$ | async as user">
-      <span class="user-name"
-        >Welcome, {{ user.firstName }} {{ user.lastName }}</span
-      >
-      <button
-        mat-icon-button
-        (click)="goToCart()"
-        matTooltip="Shopping Cart"
-        class="cart-button"
-      >
-        <mat-icon
-          matBadge="{{ (cartItemCount$ | async) || 0 }}"
-          [matBadgeHidden]="(cartItemCount$ | async) === 0"
-          >shopping_cart</mat-icon
-        >
-      </button>
-      <button mat-icon-button (click)="goToProfile()" matTooltip="Profile">
-        <mat-icon>person</mat-icon>
-      </button>
-      <button mat-icon-button (click)="onLogout()" matTooltip="Logout">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
-
-    <app-filter
-      class="filter"
-      [categories]="categories"
-      [selectedCategory]="selectedCategory"
-      [loading]="loading"
-      [products]="products"
-      [totalCount]="totalCount"
-      (categoryChange)="onCategoryChange($event)"
-      (clearFilter)="clearCategoryFilter()"
-    ></app-filter>
-    <button
-      mat-icon-button
-      (click)="refreshProducts()"
-      [disabled]="loading"
-      matTooltip="Refresh Products"
-    >
-      <mat-icon>refresh</mat-icon>
-    </button>
-  </mat-toolbar>
-
+  <app-header></app-header>
+  <app-filter
+    class="filter"
+    [categories]="categories"
+    [selectedCategory]="selectedCategory"
+    [loading]="loading"
+    [products]="products"
+    [totalCount]="totalCount"
+    (categoryChange)="onCategoryChange($event)"
+    (clearFilter)="clearCategoryFilter()"
+  ></app-filter>
+  <button
+    mat-icon-button
+    (click)="refreshProducts()"
+    [disabled]="loading"
+    matTooltip="Refresh Products"
+  >
+    <mat-icon>refresh</mat-icon>
+  </button>
   <!-- Loading State -->
   <div class="loading-container" *ngIf="loading">
     <mat-spinner diameter="50"></mat-spinner>

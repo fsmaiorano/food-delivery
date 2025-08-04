@@ -34,7 +34,7 @@ export class HeaderComponent {
 
   onLogout(): void {
     this.authService.signOut();
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/dashboard']);
   }
 
   goToProfile(): void {

@@ -12,5 +12,6 @@ global using Basket.Api.Data;
 global using Basket.Api.Models;
 global using BuildingBlocks.Messaging;
 global using Discount.Grpc;
+global using Grpc.Core;
 global using Microsoft.Extensions.Caching.Distributed;
 global using System.Text.Json;

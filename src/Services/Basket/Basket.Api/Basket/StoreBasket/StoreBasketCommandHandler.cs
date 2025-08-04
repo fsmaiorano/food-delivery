@@ -1,7 +1,3 @@
-using Basket.Api.Data;
-using Basket.Api.Models;
-using Discount.Grpc;
-
 namespace Basket.Api.Basket.StoreBasket;
 
 public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
@@ -25,17 +21,32 @@ public class StoreBasketCommandHandler(
     {
         foreach (var item in cart.Items)
         {
-            var coupon = await discountProtoServiceClient.GetDiscountAsync(
-                new GetDiscountRequest { ProductName = item.ProductName },
-                cancellationToken: cancellationToken
-            );
+            try
+            {
+                var coupon = await discountProtoServiceClient.GetDiscountAsync(
+                    new GetDiscountRequest { ProductName = item.ProductName },
+                    cancellationToken: cancellationToken
+                );
 
-            if (decimal.TryParse(coupon.Amount?.Trim(), System.Globalization.NumberStyles.AllowDecimalPoint,
-                    System.Globalization.CultureInfo.InvariantCulture, out var discountAmount))
-                item.Price -= discountAmount;
-            else
+                if (decimal.TryParse(coupon.Amount?.Trim(), System.Globalization.NumberStyles.AllowDecimalPoint,
+                        System.Globalization.CultureInfo.InvariantCulture, out var discountAmount))
+                    item.Price -= discountAmount;
+                else
+                    throw new InvalidOperationException(
+                        $"Invalid discount amount for product {item.ProductName}: {coupon.Amount}");
+            }
+            catch (RpcException ex)
+            {
+                // Log the gRPC error and provide more context
                 throw new InvalidOperationException(
-                    $"Invalid discount amount for product {item.ProductName}: {coupon.Amount}");
+                    $"Failed to get discount for product {item.ProductName}. gRPC Error: {ex.StatusCode} - {ex.Status.Detail}", ex);
+            }
+            catch (Exception ex)
+            {
+                // Log any other errors
+                throw new InvalidOperationException(
+                    $"Unexpected error getting discount for product {item.ProductName}: {ex.Message}", ex);
+            }
         }
     }
 }

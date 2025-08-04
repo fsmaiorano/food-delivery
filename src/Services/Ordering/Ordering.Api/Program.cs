@@ -19,6 +19,7 @@ GetOrdersEndpoint.MapEndpoints(app);
 
 if (app.Environment.IsDevelopment())
 {
+    await Task.Delay(TimeSpan.FromSeconds(5));
     await app.InitialiseDatabaseAsync();
 }
 

@@ -7,37 +7,45 @@ public static class DatabaseExtencions
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        await WaitForDatabaseAsync(context);
-
-        var created = await context.Database.EnsureCreatedAsync();
-
-        if (!created)
+        try
         {
-            try
+            await WaitForDatabaseAsync(context);
+
+            var created = await context.Database.EnsureCreatedAsync();
+
+            if (!created)
             {
-                await context.Database.MigrateAsync();
-                Console.WriteLine("Database migration completed successfully.");
+                try
+                {
+                    await context.Database.MigrateAsync();
+                    Console.WriteLine("Database migration completed successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Migration failed, but continuing: {ex.Message}");
+                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"Migration failed, but continuing: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                Console.WriteLine("Database was created successfully.");
             }
+
+            await Task.Delay(1000);
+
+            await SeedAsync(context);
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("Database was created successfully.");
+            Console.WriteLine($"Database initialization failed: {ex.Message}");
+            Console.WriteLine("Application will continue without database initialization.");
         }
-
-        await Task.Delay(1000);
-
-        await SeedAsync(context);
     }
 
     private static async Task WaitForDatabaseAsync(ApplicationDbContext context)
     {
-        var maxRetries = 10;
-        var delay = TimeSpan.FromSeconds(2);
+        var maxRetries = 15;
+        var baseDelay = TimeSpan.FromSeconds(2);
 
         for (int i = 0; i < maxRetries; i++)
         {
@@ -49,12 +57,28 @@ public static class DatabaseExtencions
             }
             catch (Exception ex) when (i < maxRetries - 1)
             {
-                Console.WriteLine($"Database connection attempt {i + 1} failed: {ex.Message}. Retrying in {delay.TotalSeconds} seconds...");
-                await Task.Delay(delay);
+                var delay = TimeSpan.FromMilliseconds(baseDelay.TotalMilliseconds * Math.Pow(1.5, i) + Random.Shared.Next(0, 1000));
+                var maxDelay = TimeSpan.FromSeconds(30);
+                delay = delay > maxDelay ? maxDelay : delay;
+
+                Console.WriteLine($"Database connection attempt {i + 1}/{maxRetries} failed: {ex.Message}");
+                Console.WriteLine($"Retrying in {delay.TotalSeconds:F1} seconds...");
+
+                if (ex.Message.Contains("insufficient system memory") ||
+                    ex.Message.Contains("out of memory") ||
+                    ex.Message.Contains("resource pool"))
+                {
+                    Console.WriteLine("Memory-related database error detected. Waiting longer before retry...");
+                    await Task.Delay(TimeSpan.FromSeconds(30));
+                }
+                else
+                {
+                    await Task.Delay(delay);
+                }
             }
         }
 
-        Console.WriteLine("Failed to connect to database after all retries. Proceeding anyway...");
+        throw new InvalidOperationException($"Failed to connect to database after {maxRetries} attempts. Please check SQL Server configuration and memory allocation.");
     }
 
     private static async Task SeedAsync(ApplicationDbContext context)

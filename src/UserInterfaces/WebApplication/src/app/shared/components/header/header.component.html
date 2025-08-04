@@ -33,4 +33,14 @@
       </button>
     </mat-menu>
   </div>
+  <div *ngIf="!(currentUser$ | async)">
+    <button
+      class="signin-button"
+      mat-button
+      [routerLink]="['/auth']"
+      matTooltip="Login"
+    >
+      <span>Sign In</span>
+    </button>
+  </div>
 </mat-toolbar>

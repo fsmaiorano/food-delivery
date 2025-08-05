@@ -12,19 +12,23 @@
   </mat-toolbar>
 
   <!-- Loading State -->
-  <div class="loading-container" *ngIf="loading$ | async">
+  @if (loading$ | async) {
+  <div class="loading-container">
     <mat-spinner diameter="50"></mat-spinner>
     <p class="loading-text">Loading cart...</p>
   </div>
+  }
 
   <!-- Error State -->
-  <div class="error-container" *ngIf="error$ | async as error">
+  @if (error$ | async) {
+  <div class="error-container">
     <mat-icon color="warn">error</mat-icon>
-    <p class="error-text">{{ error }}</p>
+    <p class="error-text">{{ error$ }}</p>
     <button mat-raised-button color="primary" (click)="goBack()">
       Go Back
     </button>
   </div>
+  }
 
   <!-- Cart Content -->
   <div class="cart-content" *ngIf="!(loading$ | async) && !(error$ | async)">
@@ -110,15 +114,16 @@
           >
             Clear Cart
           </button>
+          @if (!showCheckoutForm) {
           <button
             mat-raised-button
             color="primary"
             (click)="showCheckout()"
             [disabled]="loading$ | async"
-            *ngIf="!showCheckoutForm"
           >
             Proceed to Checkout
           </button>
+          }
         </mat-card-actions>
       </mat-card>
 
@@ -129,6 +134,17 @@
             <mat-icon>payment</mat-icon>
             Checkout Information
           </mat-card-title>
+          <div class="header-actions" *ngIf="isDevelopment()">
+            <button
+              mat-stroked-button
+              color="accent"
+              (click)="loadMockData()"
+              matTooltip="Load mock data for testing"
+            >
+              <mat-icon>auto_fix_high</mat-icon>
+              Load Mock Data
+            </button>
+          </div>
         </mat-card-header>
         <mat-card-content>
           <form [formGroup]="checkoutForm" (ngSubmit)="checkout()">
@@ -145,14 +161,12 @@
                         placeholder="Enter your first name"
                         required
                       />
-                      <mat-error
-                        *ngIf="
-                          checkoutForm.get('firstName')?.touched &&
-                          checkoutForm.get('firstName')?.errors
-                        "
-                      >
+                      @if (checkoutForm.get('firstName')?.touched &&
+                      checkoutForm.get('firstName')?.errors) {
+                      <mat-error>
                         {{ getErrorMessage("firstName") }}
                       </mat-error>
+                      }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="form-field">
@@ -183,14 +197,12 @@
                       placeholder="Enter your email address"
                       required
                     />
-                    <mat-error
-                      *ngIf="
-                        checkoutForm.get('emailAddress')?.touched &&
-                        checkoutForm.get('emailAddress')?.errors
-                      "
-                    >
+                    @if (checkoutForm.get('emailAddress')?.touched &&
+                    checkoutForm.get('emailAddress')?.errors) {
+                    <mat-error>
                       {{ getErrorMessage("emailAddress") }}
                     </mat-error>
+                    }
                   </mat-form-field>
                 </div>
 
@@ -230,14 +242,12 @@
                         <mat-option value="AU">Australia</mat-option>
                         <mat-option value="BR">Brazil</mat-option>
                       </mat-select>
-                      <mat-error
-                        *ngIf="
-                          checkoutForm.get('country')?.touched &&
-                          checkoutForm.get('country')?.errors
-                        "
-                      >
+                      @if (checkoutForm.get('country')?.touched &&
+                      checkoutForm.get('country')?.errors) {
+                      <mat-error>
                         {{ getErrorMessage("country") }}
                       </mat-error>
+                      }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="form-field">
@@ -266,14 +276,12 @@
                         placeholder="Enter ZIP code"
                         required
                       />
-                      <mat-error
-                        *ngIf="
-                          checkoutForm.get('zipCode')?.touched &&
-                          checkoutForm.get('zipCode')?.errors
-                        "
-                      >
+                      @if (checkoutForm.get('zipCode')?.touched &&
+                      checkoutForm.get('zipCode')?.errors) {
+                      <mat-error>
                         {{ getErrorMessage("zipCode") }}
                       </mat-error>
+                      }
                     </mat-form-field>
                   </div>
                 </div>
@@ -309,14 +317,12 @@
                       placeholder="Enter name on card"
                       required
                     />
-                    <mat-error
-                      *ngIf="
-                        checkoutForm.get('cardName')?.touched &&
-                        checkoutForm.get('cardName')?.errors
-                      "
-                    >
+                    @if (checkoutForm.get('cardName')?.touched &&
+                    checkoutForm.get('cardName')?.errors) {
+                    <mat-error>
                       {{ getErrorMessage("cardName") }}
                     </mat-error>
+                    }
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="form-field-full">
@@ -329,14 +335,12 @@
                       maxlength="19"
                       required
                     />
-                    <mat-error
-                      *ngIf="
-                        checkoutForm.get('cardNumber')?.touched &&
-                        checkoutForm.get('cardNumber')?.errors
-                      "
-                    >
+                    @if (checkoutForm.get('cardNumber')?.touched &&
+                    checkoutForm.get('cardNumber')?.errors) {
+                    <mat-error>
                       {{ getErrorMessage("cardNumber") }}
                     </mat-error>
+                    }
                   </mat-form-field>
 
                   <div class="form-row">
@@ -350,14 +354,12 @@
                         maxlength="5"
                         required
                       />
-                      <mat-error
-                        *ngIf="
-                          checkoutForm.get('expiration')?.touched &&
-                          checkoutForm.get('expiration')?.errors
-                        "
-                      >
+                      @if (checkoutForm.get('expiration')?.touched &&
+                      checkoutForm.get('expiration')?.errors) {
+                      <mat-error>
                         {{ getErrorMessage("expiration") }}
                       </mat-error>
+                      }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="form-field">
@@ -370,14 +372,12 @@
                         maxlength="4"
                         required
                       />
-                      <mat-error
-                        *ngIf="
-                          checkoutForm.get('cvv')?.touched &&
-                          checkoutForm.get('cvv')?.errors
-                        "
-                      >
+                      @if (checkoutForm.get('cvv')?.touched &&
+                      checkoutForm.get('cvv')?.errors) {
+                      <mat-error>
                         {{ getErrorMessage("cvv") }}
                       </mat-error>
+                      }
                     </mat-form-field>
                   </div>
                 </div>

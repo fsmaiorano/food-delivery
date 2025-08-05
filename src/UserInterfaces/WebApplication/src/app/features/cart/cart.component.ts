@@ -20,6 +20,7 @@ import {
   CheckoutBasketRequest,
 } from '../../shared/models/basket.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -85,6 +86,33 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.basketService.loadBasket();
+
+    // Fill form with mock data in development environment
+    if (!environment.production) {
+      this.fillWithMockData();
+    }
+  }
+
+  private fillWithMockData(): void {
+    this.checkoutForm.patchValue({
+      // Personal Information
+      firstName: 'John',
+      lastName: 'Doe',
+      emailAddress: 'john.doe@example.com',
+
+      // Address Information
+      addressLine: '123 Main Street, Apt 4B',
+      country: 'United States',
+      state: 'California',
+      zipCode: '90210',
+
+      // Payment Information
+      paymentMethod: 1,
+      cardName: 'John Doe',
+      cardNumber: '4532015112830366',
+      expiration: '12/27',
+      cvv: '123',
+    });
   }
 
   ngOnDestroy(): void {
@@ -195,10 +223,38 @@ export class CartComponent implements OnInit, OnDestroy {
 
   showCheckout(): void {
     this.showCheckoutForm = true;
+
+    // Show notification about mock data in development
+    if (!environment.production) {
+      this.snackBar.open(
+        'Development mode: Checkout form filled with mock data',
+        'Close',
+        {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        }
+      );
+    }
   }
 
   hideCheckout(): void {
     this.showCheckoutForm = false;
+  }
+
+  loadMockData(): void {
+    if (!environment.production) {
+      this.fillWithMockData();
+      this.snackBar.open('Mock data reloaded', 'Close', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+      });
+    }
+  }
+
+  isDevelopment(): boolean {
+    return !environment.production;
   }
 
   formatCardNumber(event: any): void {

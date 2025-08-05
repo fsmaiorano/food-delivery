@@ -238,10 +238,31 @@
   margin-top: 20px;
 
   mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     mat-card-title {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
     }
   }
 

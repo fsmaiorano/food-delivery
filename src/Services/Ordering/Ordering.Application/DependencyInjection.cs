@@ -1,3 +1,6 @@
+using Ordering.Application.Orders.EventHandlers.Integration;
+using Ordering.Application.Services;
+
 namespace Ordering.Application;
 
 public static class DependencyInjection
@@ -14,8 +17,10 @@ public static class DependencyInjection
             options.Password = configuration["MessageBroker:Password"]!;
         });
 
-
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+        services.AddHostedService<CheckoutConsumerService>();
+        services.AddTransient<BasketCheckoutEventHandler>();
         return services;
     }
 }

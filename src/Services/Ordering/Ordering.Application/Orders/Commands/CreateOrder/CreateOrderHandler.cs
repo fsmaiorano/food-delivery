@@ -13,7 +13,7 @@ public class CreateOrderHandler(IApplicationDbContext dbContext)
         return new CreateOrderResult(order.Id.Value);
     }
 
-    private Order CreateNewOrder(OrderDto orderDto)
+    private static Order CreateNewOrder(OrderDto orderDto)
     {
         var shippingAddress = Address.Of(orderDto.ShippingAddress.FirstName, orderDto.ShippingAddress.LastName,
             orderDto.ShippingAddress.EmailAddress, orderDto.ShippingAddress.AddressLine,
@@ -35,7 +35,7 @@ public class CreateOrderHandler(IApplicationDbContext dbContext)
 
         foreach (var orderItemDto in orderDto.OrderItems)
             newOrder.Add(ProductId.Of(orderItemDto.ProductId), orderItemDto.Quantity, orderItemDto.Price);
-
+        
         return newOrder;
     }
 }

@@ -1,6 +1,7 @@
 using Basket.Api.Dtos;
 using BuildingBlocks.Messaging.Events;
 using BuildingBlocks.Messaging.Interfaces;
+using BuildingBlocks.Messaging.Queues;
 
 namespace Basket.Api.Basket.CheckoutBasket;
 
@@ -39,7 +40,7 @@ public class CheckoutBasketCommandHandler(IBasketRepository repository, IMessage
             PaymentMethod = (int)command.BasketCheckoutDto.PaymentMethod
         };
 
-        await messagePublisher.PublishAsync(eventMessage, "", cancellationToken);
+        await messagePublisher.PublishAsync(eventMessage, Queues.Checkout, cancellationToken);
         await repository.DeleteBasket(command.BasketCheckoutDto.UserName, cancellationToken);
 
         return new CheckoutBasketResult(true);

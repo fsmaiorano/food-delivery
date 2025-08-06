@@ -228,15 +228,11 @@ export class BasketService {
     );
   }
 
-  checkoutBasket(
-    username: string,
-    checkoutData: CheckoutBasketRequest
-  ): Observable<any> {
+  checkoutBasket(checkoutData: CheckoutBasketRequest): Observable<any> {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
-    console.log('Checking out basket for username:', username);
     console.log('Request URL:', `${this.apiUrl}/basket/checkout`);
-
+    debugger;
     return this.http
       .post<any>(`${this.apiUrl}/basket/checkout`, checkoutData)
       .pipe(

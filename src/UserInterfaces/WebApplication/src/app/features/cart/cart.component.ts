@@ -13,7 +13,7 @@ import {
   AuthUser,
 } from '../../shared/services/auth-store.service';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, Observable } from 'rxjs';
+import { Subject, takeUntil, Observable, firstValueFrom } from 'rxjs';
 import {
   Basket,
   BasketCheckoutDto,
@@ -312,9 +312,9 @@ export class CartComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const basket = await this.basket$
-        .pipe(takeUntil(this.destroy$))
-        .toPromise();
+      const basket = await firstValueFrom(
+        this.basket$.pipe(takeUntil(this.destroy$))
+      );
 
       if (!basket || basket.items.length === 0) {
         this.snackBar.open('Your cart is empty', 'Close', {
@@ -327,12 +327,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
       const formData = this.checkoutForm.value;
       const totalPrice =
-        (await this.totalPrice$.pipe(takeUntil(this.destroy$)).toPromise()) ||
-        0;
+        (await firstValueFrom(
+          this.totalPrice$.pipe(takeUntil(this.destroy$))
+        )) || 0;
 
       const basketCheckoutDto: BasketCheckoutDto = {
         userName: user.username,
-        customerId: user.id || 'guest',
+        customerId: user.id,
         totalPrice: totalPrice,
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -352,9 +353,8 @@ export class CartComponent implements OnInit, OnDestroy {
         BasketCheckoutDto: basketCheckoutDto,
       };
 
-      await this.basketService
-        .checkoutBasket(user.username, request)
-        .toPromise();
+      debugger;
+      await firstValueFrom(this.basketService.checkoutBasket(request));
 
       this.snackBar.open(
         'Checkout successful! Your order has been placed.',

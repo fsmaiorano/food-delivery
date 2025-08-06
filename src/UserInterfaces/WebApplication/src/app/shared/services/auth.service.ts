@@ -158,6 +158,7 @@ export class AuthService {
       map((userInfo) => {
         console.log('User info loaded successfully:', userInfo);
         const user: AuthUser = {
+          id: userInfo.sub,
           username: userInfo.preferred_username,
           email: userInfo.email,
           firstName: userInfo.given_name,

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface AuthUser {
-  id?: string;
+  id: string;
   username: string;
   email: string;
   firstName: string;

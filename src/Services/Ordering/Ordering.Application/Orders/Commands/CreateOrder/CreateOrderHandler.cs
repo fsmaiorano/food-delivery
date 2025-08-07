@@ -1,10 +1,22 @@
+using Ordering.Application.Services.Http;
+
 namespace Ordering.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderHandler(IApplicationDbContext dbContext)
+public class CreateOrderHandler(IApplicationDbContext dbContext, IKeyCloakService keyCloakService)
     : ICommandHandler<CreateOrderCommand, CreateOrderResult>
 {
     public async Task<CreateOrderResult> HandleAsync(CreateOrderCommand command, CancellationToken cancellationToken)
     {
+        // validate if customer exists, if not, register before create the order
+        var customer = await dbContext.Customers
+            .FirstOrDefaultAsync(c => c.Id == CustomerId.Of(command.Order.CustomerId), cancellationToken);
+
+        if (customer is null)
+        {
+            //TODO - call keycloak to get customer details
+            var response = await keyCloakService.GetUserInfoAdmin(command.Order.CustomerId.ToString());
+        }
+        
         var order = CreateNewOrder(command.Order);
 
         dbContext.Orders.Add(order);

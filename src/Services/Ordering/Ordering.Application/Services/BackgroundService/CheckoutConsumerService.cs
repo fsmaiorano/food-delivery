@@ -1,14 +1,13 @@
 using BuildingBlocks.Messaging.Queues;
-using Microsoft.Extensions.Hosting;
 using Ordering.Application.Orders.EventHandlers.Integration;
 
-namespace Ordering.Application.Services;
+namespace Ordering.Application.Services.BackgroundService;
 
 public class CheckoutConsumerService(
   IMessageConsumer consumer,
   ILogger<CheckoutConsumerService> logger,
   IServiceProvider serviceProvider)
-  : BackgroundService
+  : Microsoft.Extensions.Hosting.BackgroundService
 {
   private const string QueueName = Queues.Checkout;
 

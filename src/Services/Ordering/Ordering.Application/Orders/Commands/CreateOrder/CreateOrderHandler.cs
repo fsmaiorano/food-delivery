@@ -7,16 +7,25 @@ public class CreateOrderHandler(IApplicationDbContext dbContext, IKeyCloakServic
 {
     public async Task<CreateOrderResult> HandleAsync(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        // validate if customer exists, if not, register before create the order
         var customer = await dbContext.Customers
             .FirstOrDefaultAsync(c => c.Id == CustomerId.Of(command.Order.CustomerId), cancellationToken);
 
         if (customer is null)
         {
-            //TODO - call keycloak to get customer details
-            var response = await keyCloakService.GetUserInfoAdmin(command.Order.CustomerId.ToString());
+            var storedUser = await keyCloakService.GetUserInfoAdmin(command.Order.CustomerId.ToString());
+
+            if (storedUser is null)
+                throw new NotFoundException($"Customer with ID {command.Order.CustomerId} not found in Keycloak.");
+            
+            customer = Customer.Create(
+                id: CustomerId.Of(command.Order.CustomerId),
+                name: storedUser.FullName ?? $"{storedUser.FirstName.Trim() } {storedUser.LastName.Trim()}",
+                email: storedUser.Email
+            );
+            
+            dbContext.Customers.Add(customer);
         }
-        
+
         var order = CreateNewOrder(command.Order);
 
         dbContext.Orders.Add(order);
@@ -47,7 +56,7 @@ public class CreateOrderHandler(IApplicationDbContext dbContext, IKeyCloakServic
 
         foreach (var orderItemDto in orderDto.OrderItems)
             newOrder.Add(ProductId.Of(orderItemDto.ProductId), orderItemDto.Quantity, orderItemDto.Price);
-        
+
         return newOrder;
     }
 }

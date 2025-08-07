@@ -22,9 +22,9 @@ body:json {
 }
 
 body:form-urlencoded {
-  grant_type: password
-  username: fsmaiorano
-  password: 123456
+  grant_type: client_credentials
+  username: service-account-backend-app
   client_id: backend-app
   client_secret: my-backend-secret
+  ~password: 123456
 }

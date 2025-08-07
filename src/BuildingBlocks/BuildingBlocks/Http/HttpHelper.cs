@@ -94,6 +94,11 @@ public abstract class HttpHelper(HttpClient httpClient)
         if (string.IsNullOrWhiteSpace(token))
             return;
 
+        if (client.DefaultRequestHeaders.Contains("Authorization"))
+            client.DefaultRequestHeaders.Remove("Authorization");
+
+        token = token.StartsWith("Bearer ") ? token[7..] : token;
+        
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 

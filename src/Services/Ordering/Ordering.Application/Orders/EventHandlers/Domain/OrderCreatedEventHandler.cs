@@ -1,3 +1,5 @@
+using BuildingBlocks.Messaging.Queues;
+
 namespace Ordering.Application.Orders.EventHandlers.Domain;
 
 public class OrderCreatedEventHandler(
@@ -13,7 +15,7 @@ public class OrderCreatedEventHandler(
         if (await featureManager.IsEnabledAsync("OrderFullfilment"))
         {
             var orderCreatedIntegrationEvent = domainEvent.order.ToOrderDto();
-            await publishEndpoint.PublishAsync(orderCreatedIntegrationEvent, "", cancellationToken);
+            await publishEndpoint.PublishAsync(orderCreatedIntegrationEvent, Queues.Order, cancellationToken);
         }
     }
 }

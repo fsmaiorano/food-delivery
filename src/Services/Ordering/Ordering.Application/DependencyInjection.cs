@@ -1,4 +1,6 @@
 using BuildingBlocks.Http;
+using Ordering.Application.Orders.Commands.PatchOrderStatus;
+using Ordering.Application.Orders.EventHandlers.Domain;
 using Ordering.Application.Orders.EventHandlers.Integration;
 using Ordering.Application.Services.BackgroundService;
 using Ordering.Application.Services.Http;
@@ -25,7 +27,13 @@ public static class DependencyInjection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
         services.AddHostedService<CheckoutConsumerService>();
+        services.AddHostedService<OrderingProcessService>();
+        
+        services.AddTransient<PatchOrderStatusHandler>();
         services.AddTransient<BasketCheckoutEventHandler>();
+        services.AddTransient<OrderCreatedEventHandler>();
+        services.AddTransient<OrderUpdatedEventHandler>();
+        
         return services;
     }
 

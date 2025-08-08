@@ -1,6 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
@@ -13,6 +12,7 @@ app.UseApiServices();
 CreateOrderEndpoint.MapEndpoints(app);
 DeleteOrderEndpoint.MapEndpoints(app);
 UpdateOrderEndpoint.MapEndpoints(app);
+PatchOrderStatusEndpoint.MapEndpoints(app);
 GetOrdersByCustomerEndpoint.MapEndpoints(app);
 GetOrdersByNameEndpoint.MapEndpoints(app);
 GetOrdersEndpoint.MapEndpoints(app);

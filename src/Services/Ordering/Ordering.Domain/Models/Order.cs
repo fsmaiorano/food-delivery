@@ -48,6 +48,15 @@ public class Order : Aggregate<OrderId>
 
         AddDomainEvent(new OrderUpdatedEvent(this));
     }
+    
+    public void UpdateStatus(OrderStatus status)
+    {
+        if (Status == status)
+            return;
+
+        Status = status;
+        AddDomainEvent(new OrderUpdatedEvent(this));
+    }
 
     public void Add(ProductId productId, int quantity, decimal price)
     {

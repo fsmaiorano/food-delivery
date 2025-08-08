@@ -16,13 +16,13 @@ public class CreateOrderHandler(IApplicationDbContext dbContext, IKeyCloakServic
 
             if (storedUser is null)
                 throw new NotFoundException($"Customer with ID {command.Order.CustomerId} not found in Keycloak.");
-            
+
             customer = Customer.Create(
                 id: CustomerId.Of(command.Order.CustomerId),
-                name: storedUser.FullName ?? $"{storedUser.FirstName.Trim() } {storedUser.LastName.Trim()}",
+                name: storedUser.FullName ?? $"{storedUser.FirstName.Trim()} {storedUser.LastName.Trim()}",
                 email: storedUser.Email
             );
-            
+
             dbContext.Customers.Add(customer);
         }
 
